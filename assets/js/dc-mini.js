@@ -28,7 +28,7 @@
     if (tag === 'sc-if') {
       var m = WHOLE.exec(node.getAttribute('value') || '');
       var ok = m ? resolve(m[1], scope) : false;
-      var frag = document.createDocumentFragment();
+      var frag = node.ownerDocument.createDocumentFragment();
       if (ok) {
         while (node.firstChild) frag.appendChild(node.firstChild);
         Array.prototype.slice.call(frag.childNodes).forEach(function (c) { process(c, scope); });
@@ -40,10 +40,10 @@
       var lm = WHOLE.exec(node.getAttribute('list') || '');
       var list = lm ? resolve(lm[1], scope) : [];
       var as = node.getAttribute('as') || 'item';
-      var out = document.createDocumentFragment();
+      var out = node.ownerDocument.createDocumentFragment();
       (list || []).forEach(function (item, i) {
         var s = Object.assign({}, scope); s[as] = item; s.$index = i;
-        var clone = document.createDocumentFragment();
+        var clone = node.ownerDocument.createDocumentFragment();
         Array.prototype.forEach.call(node.childNodes, function (c) { clone.appendChild(c.cloneNode(true)); });
         Array.prototype.slice.call(clone.childNodes).forEach(function (c) { process(c, s); });
         out.appendChild(clone);
