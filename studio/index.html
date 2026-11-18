@@ -70,14 +70,9 @@ button{font:inherit;cursor:pointer}
 <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 0.16em; color: #ABA6C8">{{cap.contador}}</span>
 </header>
 <div style="flex: 1 1 auto; display: flex; align-items: center; justify-content: center; padding: 36px 40px 44px">
-<button type="button" onClick="{{entrar}}" onMouseMove="{{mover}}" onMouseLeave="{{salir}}" aria-label="{{cap.aria}}" style="position: relative; display: block; width: min(100%, 1240px); aspect-ratio: 1280 / 718; padding: 0; border: 0; background: #F3EDE0; overflow: hidden; cursor: pointer; box-shadow: 0 34px 80px rgba(0,0,0,0.6)">
-<img src="{{cap.imagen}}" alt="" aria-hidden="true" style="position: absolute; left: 0; top: 0; width: 100%; height: 75%; object-fit: cover; display: block; filter: grayscale(1) sepia(0.55) contrast(1.12) brightness(1.02)">
-<img src="{{cap.imagen}}" alt="{{cap.alt}}" style="position: absolute; left: 0; top: 0; width: 100%; height: 75%; object-fit: cover; display: block; -webkit-mask-image: var(--mascaraCap); mask-image: var(--mascaraCap)">
-<div style="position: absolute; left: 0; right: 0; bottom: 0; height: 25%; background: #F3EDE0; border-top: 3px solid #8B6914; box-sizing: border-box; padding: 0 7.5%; display: flex; flex-direction: column; justify-content: center; text-align: left">
-<div style="font-family: Cambria, Caladea, Georgia, serif; font-size: 22px; color: #8B6914">{{cap.romano}}</div>
-<div style="font-family: Cambria, Caladea, Georgia, serif; font-variant: small-caps; font-size: 58px; line-height: 60px; color: #1F3A5F">{{cap.titulo}}</div>
-<div style="display: flex; align-items: center; gap: 16px; margin-top: 6px"><span style="font-family: Inter, system-ui, sans-serif; font-size: 15px; letter-spacing: 0.22em; color: #5E5A52">CINEIA STUDIO</span><span style="flex: 1 1 auto; height: 1px; background: #8B6914"></span></div>
-</div>
+<button type="button" onClick="{{entrar}}" onMouseMove="{{mover}}" onMouseLeave="{{salir}}" aria-label="{{cap.aria}}" style="position: relative; display: block; width: min(100%, 1240px); aspect-ratio: 1600 / 898; padding: 0; border: 0; background: #F3EDE0; overflow: hidden; cursor: pointer; box-shadow: 0 34px 80px rgba(0,0,0,0.6)">
+<img src="{{cap.imagen}}" alt="{{cap.alt}}" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block">
+<canvas data-portada3d data-img="{{cap.imagen}}" data-mapa="{{cap.mapa}}" data-anim="{{cap.anim}}" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: 0; transition: opacity 0.4s ease"></canvas>
 </button>
 </div>
 </div>
@@ -188,6 +183,7 @@ button{font:inherit;cursor:pointer}
 </div>
 </template>
 <script src="../assets/js/dc-mini.js"></script>
+<script src="../assets/js/portada3d.js"></script>
 <script>
 
 var Libro = {
@@ -200,7 +196,11 @@ var Libro = {
     d.setProperty('--par-corredores', 'translate(' + (x * 4) + '%, ' + (y * 2) + '%)');
     d.setProperty('--par-jabali', 'translate(' + (x * 7) + '%, ' + (y * 3) + '%)');
   },
-  afterRender: function () { this.aplicar(); window.scrollTo(0, 0); },
+  afterRender: function (root) {
+    var st = this.state;
+    this.aplicar(); window.scrollTo(0, 0);
+    Portada3D.sincronizar(root.querySelector('canvas[data-portada3d]'), function () { return { dentro: st.r > 0, mx: st.mx, my: st.my }; });
+  },
 renderVals: function () {
     const v = this.state.vista;
     const f = this.state.fase;
@@ -290,16 +290,16 @@ renderVals: function () {
     const caps = {
       pro: { contador: 'CAPÍTULO II DE V', romano: 'II', titulo: 'Producción', verbo: 'PRODUCIR', fondo: '../assets/img/cable.jpg',
         frase: 'En 1892, en el Museo Grévin de París, Émile Reynaud proyectó sus Pantomimas luminosas: dibujos que se movían ante el público, tres años antes del cinematógrafo. Producir es hacer que lo dibujado viva frente a alguien.',
-        aria: 'Abrir el capítulo II, Producción', imagen: '../assets/img/disco.jpg', alt: 'Una mano sostiene un disco de ilusión óptica con Ámbar en doce fases de carrera', pie: 'Disco de ilusión óptica con Ámbar, homenaje a los juguetes de movimiento que llevaron al teatro óptico de Reynaud.' },
+        aria: 'Abrir el capítulo II, Producción', imagen: '../assets/img/portada_ii.webp', mapa: '../assets/img/portada_ii_mapa.webp', anim: 'pro', alt: 'Un caballo con su jinete sale al galope de la tira de un zoótropo, dibujo a lápiz sepia', pie: 'Disco de ilusión óptica con Ámbar, homenaje a los juguetes de movimiento que llevaron al teatro óptico de Reynaud.' },
       post: { contador: 'CAPÍTULO III DE V', romano: 'III', titulo: 'Postproducción', verbo: 'INTEGRAR', fondo: '../assets/img/b052.jpg',
         frase: 'En 1928, Steamboat Willie de Disney fue de las primeras caricaturas con sonido sincronizado: cada silbido caía en su cuadro. Integrar es eso: que la imagen y el sonido respiren juntos.',
-        aria: 'Abrir el capítulo III, Postproducción', imagen: '../assets/img/e5.jpg', alt: 'Remanso del río de noche, con luna llena y niebla', pie: 'El remanso de noche. Lámina de escenario de «El bosque cambia».' },
+        aria: 'Abrir el capítulo III, Postproducción', imagen: '../assets/img/portada_iii.webp', mapa: '../assets/img/portada_iii_mapa.webp', anim: 'post', alt: 'Un violinista toca frente a la bocina de un fonógrafo mientras una pareja baila; entre ellos corre una tira de película, dibujo a lápiz sepia', pie: 'El remanso de noche. Lámina de escenario de «El bosque cambia».' },
       eva: { contador: 'CAPÍTULO IV DE V', romano: 'IV', titulo: 'Evaluación', verbo: 'MIRAR', fondo: '../assets/img/b032.jpg',
         frase: 'En diciembre de 1895, en el sótano del Grand Café de París, los hermanos Lumière proyectaron por primera vez ante un público que pagó su entrada. El cine empezó a existir cuando alguien lo miró.',
-        aria: 'Abrir el capítulo IV, Evaluación', imagen: '../assets/img/b032.jpg', alt: 'Boceto: ardillas en la orilla miran a otras que cruzan el río', pie: 'Quien mira y quien cruza. Boceto de «El bosque cambia».' },
+        aria: 'Abrir el capítulo IV, Evaluación', imagen: '../assets/img/portada_iv.webp', mapa: '../assets/img/portada_iv_mapa.webp', anim: 'eva', alt: 'El público de la primera función de cine se sobresalta ante una locomotora proyectada en la pantalla, dibujo a lápiz sepia', pie: 'Quien mira y quien cruza. Boceto de «El bosque cambia».' },
       dis: { contador: 'CAPÍTULO V DE V', romano: 'V', titulo: 'Distribución', verbo: 'EXHIBIR', fondo: '../assets/img/e7.jpg',
         frase: 'La última portada de este libro es tuya. Tu casa productora firma la obra y la entrega a quien la estaba esperando.',
-        aria: 'Abrir el capítulo V, Distribución', imagen: '../assets/img/e7.jpg', alt: 'Logo de CineIA Studio con la ardilla en salto', pie: 'Ejemplo: el ident de CineIAStudio. Aquí irá el de tu casa productora.' }
+        aria: 'Abrir el capítulo V, Distribución', imagen: '../assets/img/portada_v.webp', mapa: '../assets/img/portada_v_mapa.webp', anim: 'dis', alt: 'Una carreta de cinematógrafo entra a la plaza de un pueblo mexicano y la gente corre a verla, dibujo a lápiz sepia', pie: 'Ejemplo: el ident de CineIAStudio. Aquí irá el de tu casa productora.' }
     };
     const etiquetas = [['pre', 'I · Preproducción'], ['pro', 'II · Producción'], ['post', 'III · Postproducción'], ['eva', 'IV · Evaluación'], ['dis', 'V · Distribución']];
     const pestanas = etiquetas.map(([id, label]) => ({ label, active: id === f, idle: id !== f, ir: () => this.setState({ vista: 'cap', fase: id, r: 0 }) }));

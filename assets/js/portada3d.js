@@ -1,0 +1,151 @@
+/*
+ * portada3d.js · CineIA Studio
+ * Portadas con volumen: cada dibujo lleva un mapa (R = profundidad, G y B = personajes
+ * que se mueven solos). Al mover el ratón, lo cercano se desplaza más que lo lejano,
+ * como en un visor estereoscópico. Sin WebGL, queda la imagen fija de respaldo.
+ *
+ * Uso: <canvas data-portada3d data-img="..." data-mapa="..." data-anim="pro"></canvas>
+ *      Portada3D.sincronizar(canvasOnull, () => ({ dentro, mx, my }))
+ */
+(function () {
+  // Movimiento propio de cada portada (unidades: fracción del ancho / alto)
+  var ANIM = {
+    // II · el caballo y su jinete galopan
+    pro: { banda: 684 / 898, foco: 0.34, fuerza: [0.030, 0.020], g: [0.003, 0.010, 0.44], b: [0, 0, 1, 0], c: [0.5, 0.5] },
+    // III · la pareja gira el vals, el violinista lleva el compás
+    post: { banda: 690 / 898, foco: 0.36, fuerza: [0.030, 0.020], g: [0.011, 0.004, 1.9], b: [0.003, 0.005, 0.95, 0], c: [0.5, 0.5] },
+    // IV · el sombrero flota y el tren avanza hacia el público
+    eva: { banda: 683 / 898, foco: 0.30, fuerza: [0.028, 0.018], g: [0.005, 0.013, 1.7], b: [0.07, 0, 3.6, 1], c: [1330 / 1600, 395 / 898] },
+    // V · la carreta entra trotando, la gente corre
+    dis: { banda: 683 / 898, foco: 0.30, fuerza: [0.030, 0.020], g: [0.0015, 0.007, 0.5], b: [0.002, 0.005, 0.72, 0], c: [0.5, 0.5] }
+  };
+
+  var VS = 'attribute vec2 a;varying vec2 v;void main(){v=vec2(a.x*0.5+0.5,0.5-a.y*0.5);gl_Position=vec4(a,0.0,1.0);}';
+  var FS = [
+    'precision highp float;',
+    'varying vec2 v;',
+    'uniform sampler2D uImg;uniform sampler2D uMap;',
+    'uniform vec2 uMouse;uniform float uT;uniform float uBand;uniform float uFoco;uniform vec2 uFuerza;',
+    'uniform vec3 uG;uniform vec4 uB;uniform vec2 uC;uniform vec2 uTexel;',
+    'void main(){',
+    '  vec2 uv=v;',
+    '  if(uv.y>=uBand){gl_FragColor=texture2D(uImg,uv);return;}',
+    '  vec2 cen=vec2(0.5,uBand*0.5);',
+    '  vec2 p=(uv-cen)/1.035+cen;',
+    '  vec3 m=texture2D(uMap,vec2(p.x,p.y/uBand)).rgb;',
+    '  vec2 off=uMouse*(m.r-uFoco)*uFuerza;',
+    '  off+=m.g*uG.xy*sin(6.28318*uT/uG.z);',
+    '  if(uB.w>0.5){float z=uB.x*(0.5-0.5*cos(6.28318*uT/uB.z));off+=m.b*(p-uC)*z;}',
+    '  else{off+=m.b*uB.xy*sin(6.28318*uT/uB.z+1.3);}',
+    '  vec2 q=clamp(p-off,uTexel,vec2(1.0-uTexel.x,uBand-1.5*uTexel.y));',
+    '  gl_FragColor=texture2D(uImg,q);',
+    '}'
+  ].join('\n');
+
+  var actual = null;
+  var quieto = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function cargar(src) {
+    return new Promise(function (ok, mal) {
+      var im = new Image();
+      im.crossOrigin = 'anonymous';
+      im.onload = function () { ok(im); };
+      im.onerror = mal;
+      im.src = src;
+    });
+  }
+
+  function textura(gl, im) {
+    var t = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, t);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, im);
+    return t;
+  }
+
+  function sombreador(gl, tipo, src) {
+    var s = gl.createShader(tipo);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s));
+    return s;
+  }
+
+  function iniciar(canvas, fuente) {
+    var cfg = ANIM[canvas.getAttribute('data-anim')];
+    var gl = cfg && canvas.getContext('webgl', { premultipliedAlpha: false, antialias: false });
+    if (!gl) return null;
+    var vivo = { canvas: canvas, raf: 0, gl: gl, fin: false };
+    var prog = gl.createProgram();
+    try {
+      gl.attachShader(prog, sombreador(gl, gl.VERTEX_SHADER, VS));
+      gl.attachShader(prog, sombreador(gl, gl.FRAGMENT_SHADER, FS));
+      gl.linkProgram(prog);
+    } catch (e) { return null; }
+    gl.useProgram(prog);
+    var buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+    var la = gl.getAttribLocation(prog, 'a');
+    gl.enableVertexAttribArray(la);
+    gl.vertexAttribPointer(la, 2, gl.FLOAT, false, 0, 0);
+    var U = {};
+    ['uImg', 'uMap', 'uMouse', 'uT', 'uBand', 'uFoco', 'uFuerza', 'uG', 'uB', 'uC', 'uTexel'].forEach(function (n) { U[n] = gl.getUniformLocation(prog, n); });
+
+    Promise.all([cargar(canvas.getAttribute('data-img')), cargar(canvas.getAttribute('data-mapa'))]).then(function (ims) {
+      if (vivo.fin) return;
+      gl.activeTexture(gl.TEXTURE0); textura(gl, ims[0]);
+      gl.activeTexture(gl.TEXTURE1); textura(gl, ims[1]);
+      gl.uniform1i(U.uImg, 0); gl.uniform1i(U.uMap, 1);
+      gl.uniform1f(U.uBand, cfg.banda); gl.uniform1f(U.uFoco, cfg.foco);
+      gl.uniform2f(U.uFuerza, cfg.fuerza[0], cfg.fuerza[1]);
+      gl.uniform3f(U.uG, cfg.g[0], cfg.g[1], cfg.g[2]);
+      gl.uniform4f(U.uB, cfg.b[0], cfg.b[1], cfg.b[2], cfg.b[3]);
+      gl.uniform2f(U.uC, cfg.c[0], cfg.c[1]);
+      gl.uniform2f(U.uTexel, 1 / ims[0].naturalWidth, 1 / ims[0].naturalHeight);
+      var mx = 0, my = 0, t0 = performance.now(), primero = true;
+      function cuadro(ahora) {
+        if (vivo.fin) return;
+        var w = Math.round(canvas.clientWidth * Math.min(window.devicePixelRatio || 1, 2));
+        var h = Math.round(canvas.clientHeight * Math.min(window.devicePixelRatio || 1, 2));
+        if (w && h && (canvas.width !== w || canvas.height !== h)) { canvas.width = w; canvas.height = h; }
+        gl.viewport(0, 0, canvas.width, canvas.height);
+        var t = quieto ? 0 : (ahora - t0) / 1000;
+        var f = fuente(), tx, ty;
+        if (f.dentro) { tx = (f.mx - 50) / 50; ty = (f.my - 50) / 50; }
+        else if (quieto) { tx = 0; ty = 0; }
+        else { tx = 0.45 * Math.sin(t * 0.45); ty = 0.25 * Math.sin(t * 0.31 + 1); }
+        mx += (Math.max(-1, Math.min(1, tx)) - mx) * 0.08;
+        my += (Math.max(-1, Math.min(1, ty)) - my) * 0.08;
+        gl.uniform2f(U.uMouse, mx, my);
+        gl.uniform1f(U.uT, t);
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+        if (primero) { primero = false; canvas.style.opacity = '1'; }
+        vivo.raf = requestAnimationFrame(cuadro);
+      }
+      vivo.raf = requestAnimationFrame(cuadro);
+    }).catch(function () { /* se queda la imagen fija */ });
+    return vivo;
+  }
+
+  function parar() {
+    if (!actual) return;
+    actual.fin = true;
+    cancelAnimationFrame(actual.raf);
+    var ext = actual.gl.getExtension('WEBGL_lose_context');
+    if (ext) ext.loseContext();
+    actual = null;
+  }
+
+  window.Portada3D = {
+    sincronizar: function (canvas, fuente) {
+      if (actual && actual.canvas === canvas) return;
+      parar();
+      if (canvas) actual = iniciar(canvas, fuente);
+    },
+    parar: parar
+  };
+})();
