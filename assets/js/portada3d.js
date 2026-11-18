@@ -131,21 +131,53 @@
     return vivo;
   }
 
-  function parar() {
+  // perder = true libera el contexto (cuando el lienzo desaparece); con false se reutiliza
+  function parar(perder) {
     if (!actual) return;
     actual.fin = true;
     cancelAnimationFrame(actual.raf);
-    var ext = actual.gl.getExtension('WEBGL_lose_context');
-    if (ext) ext.loseContext();
+    if (perder !== false) {
+      var ext = actual.gl.getExtension('WEBGL_lose_context');
+      if (ext) ext.loseContext();
+    }
     actual = null;
   }
 
+  // Si la página no da la posición del ratón, la portada la lee ella misma
+  function rastrear(canvas) {
+    if (canvas.__rastreo) return canvas.__rastreo;
+    var est = { dentro: false, mx: 50, my: 50 };
+    var caja = canvas.parentElement || canvas;
+    caja.addEventListener('pointermove', function (e) {
+      var b = caja.getBoundingClientRect();
+      est.dentro = true;
+      est.mx = ((e.clientX - b.left) / b.width) * 100;
+      est.my = ((e.clientY - b.top) / b.height) * 100;
+    });
+    caja.addEventListener('pointerleave', function () { est.dentro = false; });
+    canvas.__rastreo = function () { return est; };
+    return canvas.__rastreo;
+  }
+
+  function sincronizar(canvas, fuente) {
+    var clave = canvas ? canvas.getAttribute('data-img') + '|' + canvas.getAttribute('data-anim') : '';
+    if (actual && actual.canvas === canvas && actual.clave === clave) return;
+    parar(!(actual && actual.canvas === canvas));
+    if (!canvas) return;
+    canvas.style.opacity = '0';
+    actual = iniciar(canvas, fuente || rastrear(canvas));
+    if (actual) actual.clave = clave;
+  }
+
   window.Portada3D = {
-    sincronizar: function (canvas, fuente) {
-      if (actual && actual.canvas === canvas) return;
-      parar();
-      if (canvas) actual = iniciar(canvas, fuente);
-    },
-    parar: parar
+    sincronizar: sincronizar,
+    parar: parar,
+    // Para páginas que redibujan solas: vigila cuándo aparece o desaparece una portada
+    vigilar: function (raiz) {
+      raiz = raiz || document.body;
+      var revisar = function () { sincronizar(raiz.querySelector('canvas[data-portada3d]')); };
+      new MutationObserver(revisar).observe(raiz, { childList: true, subtree: true });
+      revisar();
+    }
   };
 })();
