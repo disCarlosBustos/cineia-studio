@@ -10,6 +10,8 @@
 (function () {
   // Movimiento propio de cada portada (unidades: fracción del ancho / alto)
   var ANIM = {
+    // I · el fondo con volumen y las ramas al viento; corredores y jabalí corren aparte, en sus tiras de 8 cuadros
+    pre: { banda: 690 / 898, foco: 0.30, fuerza: [0.030, 0.020], g: [0.004, 0.002, 3.2], b: [0, 0, 1, 0], c: [0.5, 0.5] },
     // II · el fondo con volumen; el caballo galopa aparte, en su tira de 8 cuadros
     pro: { banda: 685 / 898, foco: 0.30, fuerza: [0.030, 0.020], g: [0, 0, 1], b: [0, 0, 1, 0], c: [0.5, 0.5] },
     // III · Pierrot y Colombina bailan en la pantalla, Paulin sigue la música

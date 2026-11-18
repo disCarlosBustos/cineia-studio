@@ -47,21 +47,7 @@ button{font:inherit;cursor:pointer}
 </div>
 </sc-if>
 
-<sc-if value="{{esCapPre}}" hint-placeholder-val="{{false}}">
-<div class="pagina" style="min-height: 1000px; background: #0F1430; color: #F3EBDD; font-family: Inter, system-ui, sans-serif; display: flex; flex-direction: column">
-<header style="display: flex; align-items: center; justify-content: space-between; padding: 22px 56px; border-bottom: 1px solid #262C52">
-<button type="button" onClick="{{aTapa}}" style="min-height: 44px; padding: 0 4px; background: transparent; border: 0; color: #ABA6C8; font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 0.08em">←  Tapa</button>
-<span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 0.16em; color: #ABA6C8">CAPÍTULO I DE V</span>
-</header>
-<div style="flex: 1 1 auto; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px; padding: 36px 40px 44px">
-<button type="button" onClick="{{entrar}}" onMouseMove="{{mover}}" onMouseLeave="{{salir}}" aria-label="Abrir el capítulo I, Preproducción" style="position: relative; display: block; width: min(100%, 1240px); aspect-ratio: 1280 / 718; padding: 0; border: 0; background: #F3EDE0; overflow: hidden; cursor: pointer; box-shadow: 0 34px 80px rgba(0,0,0,0.6)">
-<img src="../assets/img/pre_fondo.webp" alt="" aria-hidden="true" style="position: absolute; left: -2%; top: -2%; width: 104%; height: 104%; display: block; transform: var(--par-fondo); transition: transform 0.25s ease-out">
-<img src="../assets/img/run.webp" alt="" aria-hidden="true" class="trote" style="position: absolute; left: 3.516%; top: 14.763%; width: 51.406%; height: 50.557%; display: block; transform: var(--par-corredores); transition: transform 0.18s ease-out">
-<img src="../assets/img/boar.webp" alt="Cazadores corren tras un jabalí, dibujo a lápiz sepia" class="galope" style="position: absolute; left: 52.8125%; top: 25.627%; width: 43.984%; height: 35.794%; display: block; transform: var(--par-jabali); transition: transform 0.14s ease-out">
-</button>
-</div>
-</div>
-</sc-if>
+
 
 <sc-if value="{{esCapGen}}" hint-placeholder-val="{{false}}">
 <div class="pagina" style="min-height: 1000px; background: #0F1430; color: #F3EBDD; font-family: Inter, system-ui, sans-serif; display: flex; flex-direction: column">
@@ -73,7 +59,7 @@ button{font:inherit;cursor:pointer}
 <button type="button" onClick="{{entrar}}" onMouseMove="{{mover}}" onMouseLeave="{{salir}}" aria-label="{{cap.aria}}" style="position: relative; display: block; width: min(100%, 1240px); aspect-ratio: 1600 / 898; padding: 0; border: 0; background: #F3EDE0; overflow: hidden; cursor: pointer; box-shadow: 0 34px 80px rgba(0,0,0,0.6)">
 <img src="{{cap.imagen}}" alt="{{cap.alt}}" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block">
 <canvas data-portada3d data-img="{{cap.imagen}}" data-mapa="{{cap.mapa}}" data-anim="{{cap.anim}}" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: 0; transition: opacity 0.4s ease"></canvas>
-<sc-if value="{{cap.galope}}" hint-placeholder-val="{{false}}"><div class="cuadros8" aria-hidden="true" style="position: absolute; left: 40.625%; top: 10.58%; width: 50%; height: 59.91%; background-image: url('{{cap.galope}}'); background-size: 800% 100%; background-repeat: no-repeat; pointer-events: none; transform: translate(calc(var(--p3x, 0) * 2.6%), calc(var(--p3y, 0) * 1.4%))"></div></sc-if>
+<sc-for list="{{cap.capas}}" as="c" hint-placeholder-count="0"><div class="cuadros8" aria-hidden="true" style="position: absolute; left: {{c.x}}%; top: {{c.y}}%; width: {{c.w}}%; height: {{c.h}}%; background-image: url('{{c.src}}'); background-size: 800% 100%; background-repeat: no-repeat; pointer-events: none; animation-duration: {{c.dur}}s; animation-delay: {{c.delay}}s; transform: translate(calc(var(--p3x, 0) * {{c.px}}%), calc(var(--p3y, 0) * {{c.py}}%))"></div></sc-for>
 </button>
 </div>
 </div>
@@ -288,25 +274,33 @@ renderVals: function () {
         prueba: 'La obra llega a quien estaba pensada.', empezar: 'Empezar: 01 · Tu casa productora'
       }
     };
+    const COR = '../assets/img/corredor_tira.webp', JAB = '../assets/img/jabali_tira.webp', GAL = '../assets/img/galope_tira.webp';
+    const capa = (src, x, y, w, h, dur, fase, px, py) => ({ src, x, y, w, h, dur, delay: -(fase / 8) * dur, px, py });
     const caps = {
+      pre: { contador: 'CAPÍTULO I DE V', romano: 'I', titulo: 'Preproducción', verbo: 'IMAGINAR',
+        frase: 'En las ánforas panatenaicas, hace unos 2 500 años, los pintores griegos pusieron corredores en fila, cada uno en otro momento del paso, como cuadros de una misma carrera. Preproducir es imaginar el movimiento antes de que exista.',
+        aria: 'Abrir el capítulo I, Preproducción', imagen: '../assets/img/portada_i2.webp', mapa: '../assets/img/portada_i2_mapa.webp', anim: 'pre',
+        capas: [capa(COR, 0.625, 14.254, 32.5625, 50.11, 0.62, 0, 3.0, 1.8), capa(COR, 9.375, 12.695, 32.5625, 50.11, 0.62, 3, 3.1, 1.9), capa(COR, 18.125, 13.808, 32.5625, 50.11, 0.62, 6, 3.2, 1.9),
+          capa(COR, 26.875, 12.249, 32.5625, 50.11, 0.62, 1, 3.3, 2.0), capa(COR, 35.625, 13.363, 32.5625, 50.11, 0.62, 4, 3.4, 2.0), capa(JAB, 55, 23.942, 44.125, 41.537, 0.5, 0, 2.6, 1.8)],
+        alt: 'Cinco corredores al estilo de las ánforas panatenaicas persiguen a un jabalí, dibujo a lápiz sepia' },
       pro: { contador: 'CAPÍTULO II DE V', romano: 'II', titulo: 'Producción', verbo: 'PRODUCIR', fondo: '../assets/img/cable.jpg',
         frase: 'En 1878, Eadweard Muybridge fotografió a un caballo al galope cuadro por cuadro y mostró que hay un instante en que las cuatro patas quedan en el aire. Producir es hacer cada cuadro para que el movimiento exista.',
-        aria: 'Abrir el capítulo II, Producción', imagen: '../assets/img/portada_ii2.webp', mapa: '../assets/img/portada_ii2_mapa.webp', anim: 'pro', galope: '../assets/img/galope_tira.webp', alt: 'Un caballo con su jinete sale al galope de la tira de un zoótropo, dibujo a lápiz sepia', pie: 'Disco de ilusión óptica con Ámbar, homenaje a los juguetes de movimiento que llevaron al teatro óptico de Reynaud.' },
+        aria: 'Abrir el capítulo II, Producción', imagen: '../assets/img/portada_ii2.webp', mapa: '../assets/img/portada_ii2_mapa.webp', anim: 'pro', capas: [capa(GAL, 40.625, 10.58, 50, 59.91, 0.56, 0, 2.6, 1.4)], alt: 'Un caballo con su jinete sale al galope de la tira de un zoótropo, dibujo a lápiz sepia', pie: 'Disco de ilusión óptica con Ámbar, homenaje a los juguetes de movimiento que llevaron al teatro óptico de Reynaud.' },
       post: { contador: 'CAPÍTULO III DE V', romano: 'III', titulo: 'Postproducción', verbo: 'INTEGRAR', fondo: '../assets/img/b052.jpg',
         frase: 'En 1892, en el Museo Grévin de París, Émile Reynaud proyectó sus Pantomimas luminosas con la música que Gaston Paulin compuso para ellas. Integrar es eso: que la imagen y el sonido respiren juntos.',
-        aria: 'Abrir el capítulo III, Postproducción', imagen: '../assets/img/portada_iii2.webp', mapa: '../assets/img/portada_iii2_mapa.webp', anim: 'post', alt: 'Gaston Paulin toca el piano mientras Émile Reynaud mueve su Teatro Óptico y Pierrot y Colombina bailan en la pantalla del Museo Grévin, dibujo a lápiz sepia', pie: 'El remanso de noche. Lámina de escenario de «El bosque cambia».' },
+        aria: 'Abrir el capítulo III, Postproducción', imagen: '../assets/img/portada_iii2.webp', mapa: '../assets/img/portada_iii2_mapa.webp', anim: 'post', capas: [], alt: 'Gaston Paulin toca el piano mientras Émile Reynaud mueve su Teatro Óptico y Pierrot y Colombina bailan en la pantalla del Museo Grévin, dibujo a lápiz sepia', pie: 'El remanso de noche. Lámina de escenario de «El bosque cambia».' },
       eva: { contador: 'CAPÍTULO IV DE V', romano: 'IV', titulo: 'Evaluación', verbo: 'MIRAR', fondo: '../assets/img/b032.jpg',
         frase: 'En diciembre de 1895, en el sótano del Grand Café de París, los hermanos Lumière proyectaron por primera vez ante un público que pagó su entrada. El cine empezó a existir cuando alguien lo miró.',
-        aria: 'Abrir el capítulo IV, Evaluación', imagen: '../assets/img/portada_iv.webp', mapa: '../assets/img/portada_iv_mapa.webp', anim: 'eva', alt: 'El público de la primera función de cine se sobresalta ante una locomotora proyectada en la pantalla, dibujo a lápiz sepia', pie: 'Quien mira y quien cruza. Boceto de «El bosque cambia».' },
+        aria: 'Abrir el capítulo IV, Evaluación', imagen: '../assets/img/portada_iv.webp', mapa: '../assets/img/portada_iv_mapa.webp', anim: 'eva', capas: [], alt: 'El público de la primera función de cine se sobresalta ante una locomotora proyectada en la pantalla, dibujo a lápiz sepia', pie: 'Quien mira y quien cruza. Boceto de «El bosque cambia».' },
       dis: { contador: 'CAPÍTULO V DE V', romano: 'V', titulo: 'Distribución', verbo: 'EXHIBIR', fondo: '../assets/img/e7.jpg',
         frase: 'Georges Méliès fundó su propia casa productora, Star Film, y ponía su estrella en las películas para que nadie se las adueñara. La última portada de este libro es tuya: tu casa productora firma la obra y la entrega a quien la estaba esperando.',
-        aria: 'Abrir el capítulo V, Distribución', imagen: '../assets/img/portada_v2.webp', mapa: '../assets/img/portada_v2_mapa.webp', anim: 'dis', alt: 'Georges Méliès presenta la Luna con la cápsula en el ojo mientras sus ayudantes guardan películas de Star Film en cajas rumbo a París, Nueva York, Londres, Barcelona y México, dibujo a lápiz sepia', pie: 'Ejemplo: el ident de CineIAStudio. Aquí irá el de tu casa productora.' }
+        aria: 'Abrir el capítulo V, Distribución', imagen: '../assets/img/portada_v2.webp', mapa: '../assets/img/portada_v2_mapa.webp', anim: 'dis', capas: [], alt: 'Georges Méliès presenta la Luna con la cápsula en el ojo mientras sus ayudantes guardan películas de Star Film en cajas rumbo a París, Nueva York, Londres, Barcelona y México, dibujo a lápiz sepia', pie: 'Ejemplo: el ident de CineIAStudio. Aquí irá el de tu casa productora.' }
     };
     const etiquetas = [['pre', 'I · Preproducción'], ['pro', 'II · Producción'], ['post', 'III · Postproducción'], ['eva', 'IV · Evaluación'], ['dis', 'V · Distribución']];
     const pestanas = etiquetas.map(([id, label]) => ({ label, active: id === f, idle: id !== f, ir: () => this.setState({ vista: 'cap', fase: id, r: 0 }) }));
     return {
-      esTapa: v === 'tapa', esCapPre: v === 'cap' && f === 'pre', esCapGen: v === 'cap' && f !== 'pre', esInterior: v === 'int',
-      fase: fases[f] || fases.pre, cap: caps[f] || caps.pro, pestanas,
+      esTapa: v === 'tapa', esCapGen: v === 'cap', esInterior: v === 'int',
+      fase: fases[f] || fases.pre, cap: caps[f] || caps.pre, pestanas,
       mover: (e) => { const b = e.currentTarget.getBoundingClientRect(); this.state.mx = ((e.clientX - b.left) / b.width) * 100; this.state.my = ((e.clientY - b.top) / b.height) * 100; this.state.r = 190; this.aplicar(); },
       salir: () => { this.state.mx = 62; this.state.my = 46; this.state.r = 0; this.aplicar(); },
       abrir: () => this.setState({ vista: 'cap', fase: 'pre', r: 0 }),
