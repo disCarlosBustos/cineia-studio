@@ -10,14 +10,14 @@
 (function () {
   // Movimiento propio de cada portada (unidades: fracción del ancho / alto)
   var ANIM = {
-    // II · el caballo y su jinete galopan
-    pro: { banda: 684 / 898, foco: 0.34, fuerza: [0.030, 0.020], g: [0.003, 0.010, 0.44], b: [0, 0, 1, 0], c: [0.5, 0.5] },
-    // III · la pareja gira el vals, el violinista lleva el compás
-    post: { banda: 690 / 898, foco: 0.36, fuerza: [0.030, 0.020], g: [0.011, 0.004, 1.9], b: [0.003, 0.005, 0.95, 0], c: [0.5, 0.5] },
+    // II · el fondo con volumen; el caballo galopa aparte, en su tira de 8 cuadros
+    pro: { banda: 685 / 898, foco: 0.30, fuerza: [0.030, 0.020], g: [0, 0, 1], b: [0, 0, 1, 0], c: [0.5, 0.5] },
+    // III · Pierrot y Colombina bailan en la pantalla, Paulin sigue la música
+    post: { banda: 682 / 898, foco: 0.30, fuerza: [0.028, 0.018], g: [0.009, 0.006, 1.25], b: [0.002, 0.004, 0.68, 0], c: [0.5, 0.5] },
     // IV · el sombrero flota y el tren avanza hacia el público
     eva: { banda: 683 / 898, foco: 0.30, fuerza: [0.028, 0.018], g: [0.005, 0.013, 1.7], b: [0.07, 0, 3.6, 1], c: [1330 / 1600, 395 / 898] },
-    // V · la carreta entra trotando, la gente corre
-    dis: { banda: 683 / 898, foco: 0.30, fuerza: [0.030, 0.020], g: [0.0015, 0.007, 0.5], b: [0.002, 0.005, 0.72, 0], c: [0.5, 0.5] }
+    // V · Méliès presenta su Luna, que se acerca
+    dis: { banda: 684 / 898, foco: 0.30, fuerza: [0.030, 0.020], g: [0.004, 0.003, 2.4], b: [0.075, 0, 4.4, 1], c: [1215 / 1600, 165 / 898] }
   };
 
   var VS = 'attribute vec2 a;varying vec2 v;void main(){v=vec2(a.x*0.5+0.5,0.5-a.y*0.5);gl_Position=vec4(a,0.0,1.0);}';
@@ -121,6 +121,11 @@
         mx += (Math.max(-1, Math.min(1, tx)) - mx) * 0.08;
         my += (Math.max(-1, Math.min(1, ty)) - my) * 0.08;
         gl.uniform2f(U.uMouse, mx, my);
+        // capas en el DOM (como la tira del galope) siguen el mismo movimiento
+        if (canvas.parentElement) {
+          canvas.parentElement.style.setProperty('--p3x', mx.toFixed(3));
+          canvas.parentElement.style.setProperty('--p3y', my.toFixed(3));
+        }
         gl.uniform1f(U.uT, t);
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
         if (primero) { primero = false; canvas.style.opacity = '1'; }
