@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CineIA Studio · El libro</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Caladea:ital,wght@0,400;0,700;1,400&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0;background:#0A0B22}
+a{color:#1F3A5F;text-decoration-color:#8B6914}a:hover{color:#142640}
+button{font:inherit;cursor:pointer}
+@keyframes girar{from{transform:perspective(2400px) rotateY(-80deg);opacity:0}to{transform:perspective(2400px) rotateY(0deg);opacity:1}}
+.libro{transition:transform .5s ease}button:hover .libro{transform:rotateY(-4deg) rotateX(0deg) translateY(-6px)!important}
+@keyframes trote{0%,100%{translate:0 0}50%{translate:0 -1.2%}}@keyframes galope{0%,100%{translate:0 0}50%{translate:0 -2%}}.trote{animation:trote .52s ease-in-out infinite}.galope{animation:galope .38s ease-in-out infinite}@media (prefers-reduced-motion: reduce){.trote,.galope{animation:none}}
+.pagina{animation:girar 0.9s cubic-bezier(.2,.7,.2,1) both;transform-origin:left center}
+@media (prefers-reduced-motion: reduce){.pagina{animation:none}}
+</style>
+</head>
+<body>
+<div id="libro"></div>
+<template id="plantilla">
+<div style="width: 100%; min-height: 1000px; background: #0A0B22; overflow: hidden">
+
+<sc-if value="{{esTapa}}" hint-placeholder-val="{{true}}">
+<div class="pagina" style="min-height: 1000px; background: #0A0B22; color: #F3EBDD; font-family: Inter, system-ui, sans-serif; display: flex; flex-direction: column">
+<header style="display: flex; align-items: center; justify-content: space-between; padding: 22px 56px; border-bottom: 1px solid #23264A">
+<a href="../" aria-label="Volver a la página de inicio" style="display: block"><img src="../assets/img/logo.jpg" alt="CineIA Studio" style="height: 52px; width: auto; display: block; mix-blend-mode: screen"></a>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 0.08em; color: #ABA6C8">EDINBA · 2026</span>
+</header>
+<div style="flex: 1 1 auto; display: flex; flex-wrap: wrap; align-items: center; gap: 24px; padding: 40px 56px 64px">
+<div style="flex: 1 1 520px; min-width: 0">
+<p style="margin: 0 0 28px; font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 0.16em; color: #E9A23B">TALLER DE CREACIÓN AUDIOVISUAL CON IA</p>
+<h1 style="margin: 0; font-family: Cambria, Caladea, Georgia, serif; font-weight: 400; font-size: 84px; line-height: 86px; letter-spacing: -0.015em; color: #F3EBDD">Del impulso narrativo a una obra audiovisual <span style="color: #E9A23B; font-style: italic">trazable.</span></h1>
+
+</div>
+<figure style="flex: 1 1 560px; min-width: 0; margin: 0">
+<div role="button" tabindex="0" aria-label="Abrir el libro" onClick="{{abrir}}" onMouseMove="{{mover}}" onMouseLeave="{{salir}}" style="position: relative; aspect-ratio: 16 / 10; cursor: pointer; overflow: hidden; border-radius: 4px; border: 1px solid #2E3560; box-shadow: 0 30px 70px rgba(0,0,0,0.6); ">
+<img src="../assets/img/e1.jpg" alt="" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.35) brightness(1.05) sepia(0.15)">
+<img src="../assets/img/e1.jpg" alt="El nido de las ardillas al amanecer: al pasar el cursor, el boceto en grafito se llena de color" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; -webkit-mask-image: var(--mascara); mask-image: var(--mascara)">
+<div style="position: absolute; left: 0; right: 0; bottom: 0; padding: 14px 18px; background: linear-gradient(0deg, rgba(10,11,34,0.85), rgba(10,11,34,0)); display: flex; justify-content: space-between; align-items: flex-end; gap: 12px">
+<span style="font-family: Cambria, Caladea, Georgia, serif; font-style: italic; font-size: 18px; color: #E7DFCF">intención / forma / huella</span>
+
+</div>
+</div>
+</figure>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{esCapPre}}" hint-placeholder-val="{{false}}">
+<div class="pagina" style="min-height: 1000px; background: #0F1430; color: #F3EBDD; font-family: Inter, system-ui, sans-serif; display: flex; flex-direction: column">
+<header style="display: flex; align-items: center; justify-content: space-between; padding: 22px 56px; border-bottom: 1px solid #262C52">
+<button type="button" onClick="{{aTapa}}" style="min-height: 44px; padding: 0 4px; background: transparent; border: 0; color: #ABA6C8; font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 0.08em">←  Tapa</button>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 0.16em; color: #ABA6C8">CAPÍTULO I DE V</span>
+</header>
+<div style="flex: 1 1 auto; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px; padding: 36px 40px 44px">
+<button type="button" onClick="{{entrar}}" onMouseMove="{{mover}}" onMouseLeave="{{salir}}" aria-label="Abrir el capítulo I, Preproducción" style="position: relative; display: block; width: min(100%, 1240px); aspect-ratio: 1280 / 718; padding: 0; border: 0; background: #F3EDE0; overflow: hidden; cursor: pointer; box-shadow: 0 34px 80px rgba(0,0,0,0.6)">
+<img src="../assets/img/pre_fondo.webp" alt="" aria-hidden="true" style="position: absolute; left: -2%; top: -2%; width: 104%; height: 104%; display: block; transform: var(--par-fondo); transition: transform 0.25s ease-out">
+<img src="../assets/img/run.webp" alt="" aria-hidden="true" class="trote" style="position: absolute; left: 3.516%; top: 14.763%; width: 51.406%; height: 50.557%; display: block; transform: var(--par-corredores); transition: transform 0.18s ease-out">
+<img src="../assets/img/boar.webp" alt="Cazadores corren tras un jabalí, dibujo a lápiz sepia" class="galope" style="position: absolute; left: 52.8125%; top: 25.627%; width: 43.984%; height: 35.794%; display: block; transform: var(--par-jabali); transition: transform 0.14s ease-out">
+</button>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{esCapGen}}" hint-placeholder-val="{{false}}">
+<div class="pagina" style="min-height: 1000px; background: #0F1430; color: #F3EBDD; font-family: Inter, system-ui, sans-serif; display: flex; flex-direction: column">
+<header style="display: flex; align-items: center; justify-content: space-between; padding: 22px 56px; border-bottom: 1px solid #262C52">
+<button type="button" onClick="{{aTapa}}" style="min-height: 44px; padding: 0 4px; background: transparent; border: 0; color: #ABA6C8; font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 0.08em">←  Tapa</button>
+<span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 0.16em; color: #ABA6C8">{{cap.contador}}</span>
+</header>
+<div style="flex: 1 1 auto; display: flex; align-items: center; justify-content: center; padding: 36px 40px 44px">
+<button type="button" onClick="{{entrar}}" onMouseMove="{{mover}}" onMouseLeave="{{salir}}" aria-label="{{cap.aria}}" style="position: relative; display: block; width: min(100%, 1240px); aspect-ratio: 1280 / 718; padding: 0; border: 0; background: #F3EDE0; overflow: hidden; cursor: pointer; box-shadow: 0 34px 80px rgba(0,0,0,0.6)">
+<img src="{{cap.imagen}}" alt="" aria-hidden="true" style="position: absolute; left: 0; top: 0; width: 100%; height: 75%; object-fit: cover; display: block; filter: grayscale(1) sepia(0.55) contrast(1.12) brightness(1.02)">
+<img src="{{cap.imagen}}" alt="{{cap.alt}}" style="position: absolute; left: 0; top: 0; width: 100%; height: 75%; object-fit: cover; display: block; -webkit-mask-image: var(--mascaraCap); mask-image: var(--mascaraCap)">
+<div style="position: absolute; left: 0; right: 0; bottom: 0; height: 25%; background: #F3EDE0; border-top: 3px solid #8B6914; box-sizing: border-box; padding: 0 7.5%; display: flex; flex-direction: column; justify-content: center; text-align: left">
+<div style="font-family: Cambria, Caladea, Georgia, serif; font-size: 22px; color: #8B6914">{{cap.romano}}</div>
+<div style="font-family: Cambria, Caladea, Georgia, serif; font-variant: small-caps; font-size: 58px; line-height: 60px; color: #1F3A5F">{{cap.titulo}}</div>
+<div style="display: flex; align-items: center; gap: 16px; margin-top: 6px"><span style="font-family: Inter, system-ui, sans-serif; font-size: 15px; letter-spacing: 0.22em; color: #5E5A52">CINEIA STUDIO</span><span style="flex: 1 1 auto; height: 1px; background: #8B6914"></span></div>
+</div>
+</button>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{esInterior}}" hint-placeholder-val="{{false}}">
+<div class="pagina" style="min-height: 1000px; background: #26282C; font-family: Inter, system-ui, sans-serif; font-size: 15px; color: #1D1C1A; display: flex; flex-direction: column">
+
+<header style="display: flex; flex-wrap: wrap; align-items: center; gap: 16px; padding: 10px 20px; color: #ECE7DC">
+<button type="button" onClick="{{aCapitulo}}" style="min-height: 44px; background: transparent; color: #ECE7DC; border: 1px solid #6A6D75; border-radius: 6px; padding: 0 14px">←  Portada del capítulo</button>
+<img src="../assets/img/logo.jpg" alt="CineIA Studio" style="height: 34px; width: auto; display: block; mix-blend-mode: screen">
+<span style="color: #ABA597">·</span>
+<span style="font-family: Cambria, Caladea, Georgia, serif; font-size: 17px; color: #F3EEE3">El bosque cambia</span>
+<div style="flex: 1 1 40px"></div>
+<button type="button" style="min-height: 44px; background: transparent; color: #D6B160; border: 1px solid #D6B160; border-radius: 6px; padding: 0 14px; font-weight: 600">Hablar</button>
+<button type="button" style="min-height: 44px; background: transparent; color: #ECE7DC; border: 1px solid #6A6D75; border-radius: 6px; padding: 0 14px">Leer en voz alta</button>
+<button type="button" style="min-height: 44px; background: transparent; color: #ECE7DC; border: 1px solid #6A6D75; border-radius: 6px; padding: 0 14px">ES · EN</button>
+</header>
+
+<div style="display: flex; flex-wrap: wrap; flex: 1 1 auto">
+<aside style="flex: 0 0 216px; background: #55575D; display: flex; flex-direction: column; padding: 14px 0" aria-label="Pasos del capítulo">
+<sc-for list="{{fase.pasos}}" as="p" hint-placeholder-count="9">
+<sc-if value="{{p.active}}" hint-placeholder-val="{{false}}">
+<a href="#" style="height: 64px; box-sizing: border-box; display: flex; align-items: center; gap: 12px; padding: 0 16px; background: #F5EFE0; color: #1F3A5F; text-decoration: none">
+<span style="font-family: Cambria, Caladea, Georgia, serif; font-size: 18px; min-width: 26px; color: #6B5210">{{p.n}}</span>
+<span style="display: flex; flex-direction: column"><span style="font-weight: 600">{{p.name}}</span><span style="font-size: 12px; color: #5E5A52">{{p.state}}</span></span>
+</a>
+</sc-if>
+<sc-if value="{{p.idle}}" hint-placeholder-val="{{true}}">
+<a href="#" style="height: 64px; box-sizing: border-box; display: flex; align-items: center; gap: 12px; padding: 0 16px; color: #F2EEE6; text-decoration: none; border-bottom: 1px solid #64666C">
+<span style="font-family: Cambria, Caladea, Georgia, serif; font-size: 18px; min-width: 26px; color: #E6D3A3">{{p.n}}</span>
+<span style="display: flex; flex-direction: column"><span>{{p.name}}</span><span style="font-size: 12px; color: #DAD5CC">{{p.state}}</span></span>
+</a>
+</sc-if>
+</sc-for>
+</aside>
+
+<div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+<nav style="display: flex; flex-wrap: wrap; gap: 4px; padding: 0 20px; align-items: flex-end" aria-label="Capítulos">
+<sc-for list="{{pestanas}}" as="t" hint-placeholder-count="5">
+<sc-if value="{{t.active}}" hint-placeholder-val="{{false}}">
+<button type="button" onClick="{{t.ir}}" style="background: #F5EFE0; color: #1F3A5F; border: 0; border-radius: 14px 14px 0 0; padding: 13px 28px 11px; font-size: 14px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase">{{t.label}}</button>
+</sc-if>
+<sc-if value="{{t.idle}}" hint-placeholder-val="{{true}}">
+<button type="button" onClick="{{t.ir}}" style="background: #3E372C; color: #F3EBDD; border: 0; border-radius: 14px 14px 0 0; padding: 10px 22px 9px; font-size: 13px; letter-spacing: 0.18em; text-transform: uppercase">{{t.label}}</button>
+</sc-if>
+</sc-for>
+</nav>
+
+<main style="flex: 1 1 auto; background: #F5EFE0; padding: 26px 48px 30px; display: flex; flex-direction: column; gap: 18px">
+<div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px 18px">
+<h1 style="margin: 0; font-family: Cambria, Caladea, Georgia, serif; font-weight: 400; font-variant: small-caps; font-size: 40px; color: #1F3A5F">{{fase.titulo}}</h1>
+<span style="font-family: Cambria, Caladea, Georgia, serif; font-style: italic; font-size: 19px; color: #3A3732">{{fase.lema}}</span>
+</div>
+<div style="width: 72px; height: 2px; background: #8B6914"></div>
+<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+<figure style="flex: 999 1 520px; min-width: 0; margin: 0; aspect-ratio: 16 / 9; position: relative; border-radius: 6px; overflow: hidden; box-shadow: 0 14px 32px rgba(60,45,20,0.18)">
+<img src="{{fase.poster}}" alt="{{fase.posterAlt}}" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block">
+<button type="button" aria-label="Reproducir la videolección" style="position: absolute; left: 50%; top: 46%; transform: translate(-50%, -50%); width: 84px; height: 84px; border-radius: 50%; border: 2px solid #F5EFE0; background: rgba(29,28,26,0.72); display: flex; align-items: center; justify-content: center">
+<svg width="26" height="28" viewBox="0 0 22 24" aria-hidden="true"><path d="M5 2 L21 12 L5 22 Z" fill="#F5EFE0"></path></svg>
+</button>
+<figcaption style="position: absolute; left: 0; right: 0; bottom: 0; padding: 14px 20px; background: rgba(29,28,26,0.78); color: #ECE7DC; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; font-size: 15px">
+<span>{{fase.videoTitulo}}</span><span style="color: #ABA597; font-size: 13px">[POR GRABAR]</span>
+</figcaption>
+</figure>
+<div style="flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 10px">
+<span style="font-family: Cambria, Caladea, Georgia, serif; font-variant: small-caps; font-size: 18px; letter-spacing: 0.04em; color: #6B5210">{{fase.galeriaTitulo}}</span>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+<sc-for list="{{fase.galeria}}" as="g" hint-placeholder-count="4">
+<figure style="margin: 0; display: flex; flex-direction: column; gap: 5px">
+<img src="{{g.src}}" alt="{{g.alt}}" style="width: 100%; aspect-ratio: 16 / 9; object-fit: cover; display: block; border-radius: 3px; box-shadow: 0 6px 16px rgba(60,45,20,0.16)">
+<figcaption style="font-size: 12px; line-height: 16px; color: #5E5A52">{{g.pie}}</figcaption>
+</figure>
+</sc-for>
+</div>
+</div>
+</div>
+</main>
+
+<section style="background: #2F4A72; color: #F6F1E6; padding: 26px 48px 28px" aria-label="Para ver y leer en esta etapa">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); gap: 28px; align-items: start">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: #E6D3A3">Del libro</span>
+<span style="font-family: Cambria, Caladea, Georgia, serif; font-style: italic; font-size: 17px">El Observador Audiovisual</span>
+<ul style="margin: 0; padding: 0 0 0 18px; font-size: 14px; line-height: 22px; color: #D9E2EE">
+<sc-for list="{{fase.capitulos}}" as="c" hint-placeholder-count="4"><li>{{c}}</li></sc-for>
+</ul>
+<span style="font-size: 12px; color: #B9C6DA">Versión de trabajo</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span style="font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: #E6D3A3">Para ver</span>
+<a href="https://www.youtube.com/@CinePrimee/featured" style="color: #F6F1E6; font-weight: 600">CinePrime · análisis de cine</a>
+<span style="font-size: 14px; line-height: 22px; color: #D9E2EE">{{fase.verNota}}</span>
+<a href="{{fase.extraUrl}}" style="color: #F6F1E6; font-weight: 600">{{fase.extraTexto}}</a>
+</div>
+<div style="display: flex; flex-direction: column; gap: 14px; align-items: flex-start">
+<span style="font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: #E6D3A3">Para pasar al siguiente capítulo</span>
+<span style="font-size: 14px; line-height: 22px; color: #D9E2EE">{{fase.prueba}}</span>
+<a href="#" style="min-height: 48px; display: inline-flex; align-items: center; background: #D6B160; color: #17181B; text-decoration: none; border-radius: 6px; padding: 0 22px; font-weight: 600">{{fase.empezar}}</a>
+</div>
+</div>
+</section>
+</div>
+</div>
+</div>
+</sc-if>
+
+</div>
+</template>
+<script src="../assets/js/dc-mini.js"></script>
+<script>
+
+var Libro = {
+  state: { vista: 'tapa', fase: 'pre', mx: 62, my: 46, r: 120 },
+  aplicar: function () {
+    var st = this.state, x = (st.mx - 50) / 50, y = (st.my - 50) / 50, d = document.documentElement.style;
+    d.setProperty('--mascara', 'radial-gradient(circle ' + st.r + 'px at ' + st.mx + '% ' + st.my + '%, #000 55%, transparent 100%)');
+    d.setProperty('--mascaraCap', 'radial-gradient(circle ' + (st.r * 1.6) + 'px at ' + st.mx + '% ' + Math.min(100, st.my / 0.75) + '%, #000 55%, transparent 100%)');
+    d.setProperty('--par-fondo', 'translate(' + (-x * 1.2) + '%, ' + (-y * 0.8) + '%)');
+    d.setProperty('--par-corredores', 'translate(' + (x * 4) + '%, ' + (y * 2) + '%)');
+    d.setProperty('--par-jabali', 'translate(' + (x * 7) + '%, ' + (y * 3) + '%)');
+  },
+  afterRender: function () { this.aplicar(); window.scrollTo(0, 0); },
+renderVals: function () {
+    const v = this.state.vista;
+    const f = this.state.fase;
+    const IMG = {"2c6be48d0a64372bc4382baa8fb08783": "disco.jpg", "a38101cbf2f4edeec56942551a27db39": "salto.jpg", "2c8b76000caec476e056102a4809ccce": "saltitos.jpg", "64abc958f6c9604e05efd41405376a3c": "cable.jpg", "62c9d1ae33d627d0cc05cfc3dfad6842": "logo.jpg", "f0c2dd45f16ed854dee5d441e8572729": "b060.jpg", "67a590ce696bbb3a956ddc42d36fdc93": "b016.jpg", "b44320f3738f784b419f0f22381785db": "b032.jpg", "b1bea4c0724977c7c35a9017d9474108": "b043.jpg", "e1cbe6b5f6901e3ba99e36a8ee12f021": "b008.jpg", "e1a34bd2e9d700a3deb2cb4d5af55acf": "e1.jpg", "58308ddc4506f781c650717fcd873a21": "e7.jpg", "b60f665afe12eca1ad486e02ff87c87b": "ambar.jpg", "e31e158fb0afe8ec6fefe7cfdfaa0b02": "b019.jpg", "80da97d38536db513948b99f78ade4f4": "b051.jpg", "f7935faa356a9afcafd937f508981752": "b052.jpg", "2734069640d03d4e3dbdafb6584ed560": "b058.jpg", "2bdd0276a84ea7b85418e8352c321332": "b023.jpg", "37b0c87294534e80857b3df11a06b1d2": "e5.jpg", "8cf0a4b9554a08a54b5bfbf6f96fd905": "junco.jpg"};
+    const B = (id) => '../assets/img/' + (IMG[id] || id);
+    const mk = (raw) => raw.map((r, i) => ({ n: r[0], name: r[1], state: r[2], active: i === 0, idle: i !== 0 }));
+    const g = (id, alt, pie) => ({ src: B(id), alt, pie });
+    const fases = {
+      pre: {
+        titulo: 'Preproducción', lema: 'Aquí tu idea se vuelve historia, canción y bocetos.',
+        poster: '../assets/img/salto.jpg', posterAlt: 'Ámbar salta desde un cable, dibujada a lápiz',
+        videoTitulo: 'Videolección · Eduardo explica la Preproducción',
+        pasos: mk([['00', 'Portada', 'video, libro, enlaces'], ['01', 'Idea', 'aprobado'], ['02', 'Historia', 'aprobado'], ['03', 'Canción', 'aprobado'],
+          ['04', 'Guion y desglose', 'aprobado'], ['05', 'Bocetos de línea', '45 de 72'], ['06', 'Animatic', 'pendiente'],
+          ['07', 'Personajes y escenarios', 'pendiente'], ['08', 'Guion técnico', 'pendiente']]),
+        capitulos: ['Cap. 7 · Observar no es mirar', 'Cap. 10 · Narrar, sentir y justificar', 'Cap. 11 · De la ilusión de vida al mundo justificable', 'Cap. 16 · La Base Olvera'],
+        verNota: 'Narrativa: cómo se construye una historia que se entiende sin palabras.',
+        extraUrl: 'https://www.khanacademy.org/computing/pixar/storytelling', extraTexto: 'Pixar in a Box · El arte de contar historias',
+        galeriaTitulo: 'De tu obra · bocetos de línea',
+        galeria: [g('f0c2dd45f16ed854dee5d441e8572729', 'Boceto: ardillas encerradas en un corral de troncos, visto desde arriba', 'El encierro'),
+          g('67a590ce696bbb3a956ddc42d36fdc93', 'Boceto: luciérnagas trazando caminos de luz en la noche', 'Las luciérnagas'),
+          g('b44320f3738f784b419f0f22381785db', 'Boceto: ardillas en la orilla mientras otras cruzan el río', 'El cruce del río'),
+          g('b1bea4c0724977c7c35a9017d9474108', 'Boceto: pequeñas figuras avanzan por un claro entre pinos, de noche', 'El éxodo')],
+        prueba: 'Otra persona cuenta la historia viendo solo el animatic.', empezar: 'Empezar: 01 · Idea'
+      },
+      pro: {
+        titulo: 'Producción', lema: 'Aquí se hace lo que se queda en la obra.',
+        poster: '../assets/img/cable.jpg', posterAlt: 'Ámbar corre sobre un cable de luz sobre los tejados, dibujada a lápiz',
+        videoTitulo: 'Videolección · Eduardo explica la Producción',
+        pasos: mk([['00', 'Portada', 'video, libro, enlaces'], ['01', 'Sala de ensayo', 'pendiente'], ['02', 'Rodaje', 'pendiente'], ['03', 'Cuadros a color', 'pendiente'], ['04', 'Video por toma', 'pendiente']]),
+        capitulos: ['Cap. 12 · Principios de dirección con IA', 'Cap. 14 · Protocolos para creación audiovisual con IA', 'Cap. 17 · Estética de la imagen generada', 'Cap. 20 · Estética de la imperfección y la huella humana'],
+        verNota: 'Actuación: grandes interpretaciones, duelos actorales y escenas en una sola toma.',
+        extraUrl: 'https://www.khanacademy.org/computing/pixar', extraTexto: 'Pixar in a Box · animación y cámara virtual',
+        galeriaTitulo: 'De tu obra · hoja modelo y escenarios',
+        galeria: [g('b60f665afe12eca1ad486e02ff87c87b', 'Hoja modelo de Ámbar en cuatro vistas', 'Hoja modelo de personaje'),
+          g('e1a34bd2e9d700a3deb2cb4d5af55acf', 'Nido en los árboles al amanecer, con puentes colgantes', 'El nido al amanecer'),
+          g('58308ddc4506f781c650717fcd873a21', 'El Gran Árbol en un valle al amanecer', 'El Gran Árbol'),
+          g('e1cbe6b5f6901e3ba99e36a8ee12f021', 'Boceto sepia del Gran Árbol con figuras que caminan hacia él', 'Del boceto a la lámina')],
+        prueba: 'Cada personaje se reconoce como el mismo en todas las tomas.', empezar: 'Empezar: 01 · Sala de ensayo'
+      },
+      post: {
+        titulo: 'Postproducción', lema: 'Aquí imagen y sonido se vuelven una sola obra.',
+        poster: '../assets/img/e5.jpg', posterAlt: 'Remanso del río de noche, con luna llena y niebla',
+        videoTitulo: 'Videolección · Eduardo explica la Postproducción',
+        pasos: mk([['00', 'Portada', 'video, libro, enlaces'], ['01', 'Voces', 'pendiente'], ['02', 'Sonido y silencio', 'pendiente'], ['03', 'Música', 'pendiente'], ['04', 'Montaje', 'pendiente'], ['05', 'Color y máster', 'pendiente']]),
+        capitulos: ['Cap. 18 · Estética del sonido y del silencio', 'Cap. 19 · Estética del tiempo y del montaje'],
+        verNota: 'Montaje y sonido: cómo el corte y el silencio cambian lo que sentimos.',
+        extraUrl: 'https://www.khanacademy.org/computing/pixar', extraTexto: 'Pixar in a Box · sonido y efectos',
+        galeriaTitulo: 'De tu obra · escenas que piden sonido',
+        galeria: [g('f7935faa356a9afcafd937f508981752', 'Boceto: ardillas corren de noche bajo la luna llena', 'La carrera bajo la luna'),
+          g('2734069640d03d4e3dbdafb6584ed560', 'Boceto: tortugas en el agua entre luciérnagas', 'Las tortugas del río'),
+          g('80da97d38536db513948b99f78ade4f4', 'Boceto: un mapache sobre una rama, de noche', 'El mapache vigila'),
+          g('e31e158fb0afe8ec6fefe7cfdfaa0b02', 'Boceto: conejos con zanahorias en un túnel hacia la luz', 'El túnel de los conejos')],
+        prueba: 'Imagen y sonido buscan el mismo efecto.', empezar: 'Empezar: 01 · Voces'
+      },
+      eva: {
+        titulo: 'Evaluación', lema: 'Aquí se mide lo que la obra deja en quien la ve.',
+        poster: '../assets/img/b023.jpg', posterAlt: 'Boceto: una fila de ardillas avanza frente a los jaguares bajo rayos de sol',
+        videoTitulo: 'Videolección · Eduardo explica la Evaluación',
+        pasos: mk([['00', 'Portada', 'video, libro, enlaces'], ['01', 'Prueba con público', 'pendiente'], ['02', 'Qué te dejó', 'pendiente'], ['03', 'Reporte de decisiones', 'pendiente']]),
+        capitulos: ['Cap. 13 · Un sistema de compuertas', 'Cap. 21 · Pedagogía del Observador Audiovisual', 'Cap. 23 · Ética de la dirección audiovisual con IA'],
+        verNota: 'Análisis: cómo leer lo que una película provoca en su público.',
+        extraUrl: 'https://www.youtube.com/@CinePrimee/featured', extraTexto: 'CinePrime · análisis de escenas',
+        galeriaTitulo: 'De tu obra · personajes que cambian',
+        galeria: [g('8cf0a4b9554a08a54b5bfbf6f96fd905', 'Hoja modelo de Junco, el castor de gorra roja, en cuatro vistas', 'Hoja modelo de personaje'),
+          g('b44320f3738f784b419f0f22381785db', 'Boceto: ardillas en la orilla mientras otras cruzan el río', 'Quien mira y quien cruza'),
+          g('e1cbe6b5f6901e3ba99e36a8ee12f021', 'Boceto sepia del Gran Árbol con figuras que caminan hacia él', 'La llegada'),
+          g('58308ddc4506f781c650717fcd873a21', 'El Gran Árbol en un valle al amanecer', 'Lo que queda')],
+        prueba: 'Cada decisión tiene su registro.', empezar: 'Empezar: 01 · Prueba con público'
+      },
+      dis: {
+        titulo: 'Distribución', lema: 'Aquí la obra sale al mundo y abre otras.',
+        poster: '../assets/img/e7.jpg', posterAlt: 'El Gran Árbol en un valle al amanecer',
+        videoTitulo: 'Videolección · Eduardo explica la Distribución',
+        pasos: mk([['00', 'Portada', 'video, libro, enlaces'], ['01', 'Tu casa productora', 'pendiente'], ['02', 'Cómic en PDF', 'pendiente'], ['03', 'Cómic animado', 'pendiente'], ['04', 'Publicación', 'pendiente'], ['05', 'Pieza puente', 'pendiente']]),
+        capitulos: ['Cap. 6 · Del punctum al scroll', 'Cap. 22 · Implementación profesional', 'Cap. 24 · El futuro del Observador Audiovisual'],
+        verNota: 'Difusión: cómo llega una obra a su público.',
+        extraUrl: 'https://www.youtube.com/@CinePrimee/featured', extraTexto: 'CinePrime · el canal',
+        galeriaTitulo: 'De tu obra · el ident de tu casa productora',
+        galeria: [g('62c9d1ae33d627d0cc05cfc3dfad6842', 'Logo de CineIA Studio con la ardilla en salto', 'El logo'),
+          g('2c6be48d0a64372bc4382baa8fb08783', 'Disco de ilusión óptica con Ámbar', 'El disco'),
+          g('64abc958f6c9604e05efd41405376a3c', 'Ámbar corre sobre un cable', 'La carrera'),
+          g('2c8b76000caec476e056102a4809ccce', 'Ámbar en ocho fases de salto', 'El salto')],
+        prueba: 'La obra llega a quien estaba pensada.', empezar: 'Empezar: 01 · Tu casa productora'
+      }
+    };
+    const caps = {
+      pro: { contador: 'CAPÍTULO II DE V', romano: 'II', titulo: 'Producción', verbo: 'PRODUCIR', fondo: '../assets/img/cable.jpg',
+        frase: 'En 1892, en el Museo Grévin de París, Émile Reynaud proyectó sus Pantomimas luminosas: dibujos que se movían ante el público, tres años antes del cinematógrafo. Producir es hacer que lo dibujado viva frente a alguien.',
+        aria: 'Abrir el capítulo II, Producción', imagen: '../assets/img/disco.jpg', alt: 'Una mano sostiene un disco de ilusión óptica con Ámbar en doce fases de carrera', pie: 'Disco de ilusión óptica con Ámbar, homenaje a los juguetes de movimiento que llevaron al teatro óptico de Reynaud.' },
+      post: { contador: 'CAPÍTULO III DE V', romano: 'III', titulo: 'Postproducción', verbo: 'INTEGRAR', fondo: '../assets/img/b052.jpg',
+        frase: 'En 1928, Steamboat Willie de Disney fue de las primeras caricaturas con sonido sincronizado: cada silbido caía en su cuadro. Integrar es eso: que la imagen y el sonido respiren juntos.',
+        aria: 'Abrir el capítulo III, Postproducción', imagen: '../assets/img/e5.jpg', alt: 'Remanso del río de noche, con luna llena y niebla', pie: 'El remanso de noche. Lámina de escenario de «El bosque cambia».' },
+      eva: { contador: 'CAPÍTULO IV DE V', romano: 'IV', titulo: 'Evaluación', verbo: 'MIRAR', fondo: '../assets/img/b032.jpg',
+        frase: 'En diciembre de 1895, en el sótano del Grand Café de París, los hermanos Lumière proyectaron por primera vez ante un público que pagó su entrada. El cine empezó a existir cuando alguien lo miró.',
+        aria: 'Abrir el capítulo IV, Evaluación', imagen: '../assets/img/b032.jpg', alt: 'Boceto: ardillas en la orilla miran a otras que cruzan el río', pie: 'Quien mira y quien cruza. Boceto de «El bosque cambia».' },
+      dis: { contador: 'CAPÍTULO V DE V', romano: 'V', titulo: 'Distribución', verbo: 'EXHIBIR', fondo: '../assets/img/e7.jpg',
+        frase: 'La última portada de este libro es tuya. Tu casa productora firma la obra y la entrega a quien la estaba esperando.',
+        aria: 'Abrir el capítulo V, Distribución', imagen: '../assets/img/e7.jpg', alt: 'Logo de CineIA Studio con la ardilla en salto', pie: 'Ejemplo: el ident de CineIAStudio. Aquí irá el de tu casa productora.' }
+    };
+    const etiquetas = [['pre', 'I · Preproducción'], ['pro', 'II · Producción'], ['post', 'III · Postproducción'], ['eva', 'IV · Evaluación'], ['dis', 'V · Distribución']];
+    const pestanas = etiquetas.map(([id, label]) => ({ label, active: id === f, idle: id !== f, ir: () => this.setState({ vista: 'cap', fase: id, r: 0 }) }));
+    return {
+      esTapa: v === 'tapa', esCapPre: v === 'cap' && f === 'pre', esCapGen: v === 'cap' && f !== 'pre', esInterior: v === 'int',
+      fase: fases[f] || fases.pre, cap: caps[f] || caps.pro, pestanas,
+      mover: (e) => { const b = e.currentTarget.getBoundingClientRect(); this.state.mx = ((e.clientX - b.left) / b.width) * 100; this.state.my = ((e.clientY - b.top) / b.height) * 100; this.state.r = 190; this.aplicar(); },
+      salir: () => { this.state.mx = 62; this.state.my = 46; this.state.r = 0; this.aplicar(); },
+      abrir: () => this.setState({ vista: 'cap', fase: 'pre', r: 0 }),
+      entrar: () => this.setState({ vista: 'int' }),
+      aTapa: () => this.setState({ vista: 'tapa', r: 120, mx: 62, my: 46 }),
+      aCapitulo: () => this.setState({ vista: 'cap' })
+    };
+  }
+};
+DCMini.mount(document.getElementById('libro'), document.getElementById('plantilla').innerHTML, Libro);
+
+</script>
+</body>
+</html>
