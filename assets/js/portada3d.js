@@ -14,8 +14,8 @@
     pre: { banda: 690 / 898, foco: 0.30, fuerza: [0.030, 0.020], g: [0.004, 0.002, 3.2], b: [0, 0, 1, 0], c: [0.5, 0.5] },
     // II · el fondo con volumen; el caballo galopa aparte, en su tira de 8 cuadros
     pro: { banda: 685 / 898, foco: 0.30, fuerza: [0.030, 0.020], g: [0, 0, 1], b: [0, 0, 1, 0], c: [0.5, 0.5] },
-    // III · Pierrot y Colombina bailan en la pantalla, Paulin sigue la música
-    post: { banda: 682 / 898, foco: 0.30, fuerza: [0.028, 0.018], g: [0.009, 0.006, 1.25], b: [0.002, 0.004, 0.68, 0], c: [0.5, 0.5] },
+    // III · el fondo con volumen; Paulin, las notas y la película de Pierrot corren aparte en sus tiras
+    post: { banda: 683 / 898, foco: 0.30, fuerza: [0.028, 0.018], g: [0, 0, 1], b: [0, 0, 1, 0], c: [0.5, 0.5] },
     // IV · el fondo con volumen; la película del tren corre aparte, recortada a la pantalla
     eva: { banda: 683 / 898, foco: 0.30, fuerza: [0.028, 0.018], g: [0, 0, 1], b: [0, 0, 1, 0], c: [0.5, 0.5] },
     // V · Méliès presenta su Luna, que se acerca
