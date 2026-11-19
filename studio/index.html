@@ -165,8 +165,9 @@ button{font:inherit;cursor:pointer}
 <section style="flex: 1 1 {{b.base}}; min-width: 0; box-sizing: border-box; background: #FBF7EC; border: 1px solid #E3D9C2; border-radius: 6px; padding: 16px 20px; display: flex; flex-direction: column; gap: 12px">
 <span style="font-family: Cambria, Caladea, Georgia, serif; font-variant: small-caps; font-size: 18px; color: #6B5210">{{b.etiqueta}}</span>
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(190px, 100%), 1fr)); gap: 12px 18px">
-<sc-for list="{{b.items}}" as="it"><div style="display: flex; flex-direction: column; gap: 3px; border-left: 2px solid #C9B27A; padding-left: 10px"><span style="font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #1F3A5F">{{it.k}}</span><span style="font-size: 14px; line-height: 21px">{{it.v}}</span></div></sc-for>
+<sc-for list="{{b.items}}" as="it"><div style="display: flex; flex-direction: column; gap: 3px; border-left: 2px solid #C9B27A; padding-left: 10px"><span style="font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #1F3A5F">{{it.k}}</span><sc-if value="{{it.hay}}"><span style="font-size: 14px; line-height: 21px">{{it.v}}</span></sc-if><sc-if value="{{it.falta}}"><span style="font-size: 13px; font-style: italic; color: #8A8273">por producir</span></sc-if></div></sc-for>
 </div>
+<sc-if value="{{b.hayNota}}"><span style="font-size: 13px; line-height: 20px; color: #5E5A52">{{b.nota}}</span></sc-if>
 </section>
 </sc-if>
 
@@ -210,10 +211,10 @@ button{font:inherit;cursor:pointer}
 <sc-if value="{{b.esTabla}}" hint-placeholder-val="{{false}}">
 <section style="flex: 1 1 {{b.base}}; min-width: 0; box-sizing: border-box; background: #FBF7EC; border: 1px solid #E3D9C2; border-radius: 6px; padding: 16px 20px; display: flex; flex-direction: column; gap: 10px; overflow-x: auto">
 <span style="font-family: Cambria, Caladea, Georgia, serif; font-variant: small-caps; font-size: 18px; color: #6B5210">{{b.etiqueta}}</span>
-<table style="border-collapse: collapse; font-size: 14px; width: 100%">
-<thead><tr><sc-for list="{{b.cols}}" as="c"><th style="text-align: left; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #1F3A5F; border-bottom: 2px solid #C9B27A; padding: 6px 10px 6px 0; font-weight: 600">{{c}}</th></sc-for></tr></thead>
-<tbody><sc-for list="{{b.filas}}" as="r"><tr><sc-for list="{{r}}" as="c"><td style="border-bottom: 1px solid #ECE3CF; padding: 7px 10px 7px 0; vertical-align: top">{{c}}</td></sc-for></tr></sc-for></tbody>
-</table>
+<div style="max-height: {{b.alto}}; overflow: auto" role="table" aria-label="{{b.etiqueta}}"><div style="min-width: {{b.minimo}}">
+<div role="row" style="display: grid; grid-template-columns: {{b.plantilla}}; gap: 0 12px; position: sticky; top: 0; background: #FBF7EC; border-bottom: 2px solid #C9B27A"><sc-for list="{{b.cols}}" as="c"><span role="columnheader" style="font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #1F3A5F; padding: 6px 0; font-weight: 600">{{c}}</span></sc-for></div>
+<sc-for list="{{b.filas}}" as="r"><div role="row" style="display: grid; grid-template-columns: {{b.plantilla}}; gap: 0 12px; border-bottom: 1px solid #ECE3CF; font-size: 14px; line-height: 20px"><sc-for list="{{r}}" as="c"><span role="cell" style="padding: 7px 0">{{c}}</span></sc-for></div></sc-for>
+</div></div>
 <sc-if value="{{b.hayNota}}"><span style="font-size: 13px; color: #5E5A52">{{b.nota}}</span></sc-if>
 </section>
 </sc-if>
@@ -250,6 +251,27 @@ button{font:inherit;cursor:pointer}
 </section>
 </sc-if>
 
+<sc-if value="{{b.esVinetas}}" hint-placeholder-val="{{false}}">
+<section style="flex: 1 1 {{b.base}}; min-width: 0; box-sizing: border-box; background: #FBF7EC; border: 1px solid #E3D9C2; border-radius: 6px; padding: 16px 20px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-family: Cambria, Caladea, Georgia, serif; font-variant: small-caps; font-size: 18px; color: #6B5210">{{b.etiqueta}}</span>
+<div style="display: flex; height: 64px; gap: 1px" role="list" aria-label="Viñetas de la obra">
+<sc-for list="{{b.tramos}}" as="t"><div role="listitem" title="{{t.t}}" aria-label="{{t.t}}" style="flex: {{t.g}} 1 0; min-width: 0; background: {{t.c}}; display: flex; align-items: flex-end; justify-content: center; color: #FBF7EC; font-size: 9px; padding-bottom: 3px; overflow: hidden">{{t.n}}</div></sc-for>
+</div>
+<div style="display: flex; justify-content: space-between; font-size: 12px; color: #5E5A52"><span>0:00</span><span>1:00</span><span>2:00</span><span>3:00</span><span>4:00</span><span>5:00</span><span>5:35</span></div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px 18px"><sc-for list="{{b.leyenda}}" as="l"><span style="display: inline-flex; align-items: center; gap: 6px; font-size: 13px"><span style="width: 14px; height: 14px; border-radius: 2px; background: {{l.c}}"></span>{{l.t}}</span></sc-for></div>
+<sc-if value="{{b.hayNota}}"><span style="font-size: 13px; line-height: 20px; color: #5E5A52">{{b.nota}}</span></sc-if>
+</section>
+</sc-if>
+
+<sc-if value="{{b.esLecturas}}" hint-placeholder-val="{{false}}">
+<section style="flex: 1 1 100%; min-width: 0; box-sizing: border-box; border-top: 2px solid #8B6914; padding: 16px 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); gap: 18px 28px">
+<div style="display: flex; flex-direction: column; gap: 6px"><span style="font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: #6B5210">Para leer</span><span style="font-family: Cambria, Caladea, Georgia, serif; font-style: italic; font-size: 16px; color: #1F3A5F">El Observador Audiovisual</span><ul style="margin: 0; padding: 0 0 0 18px; font-size: 14px; line-height: 22px"><sc-for list="{{b.capitulos}}" as="c"><li>{{c}}</li></sc-for></ul></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><span style="font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: #6B5210">Análisis de cine</span><sc-for list="{{b.videos}}" as="x"><a href="{{x.url}}" target="_blank" rel="noopener" style="color: #1F3A5F; font-weight: 600; line-height: 21px">{{x.t}}</a><span style="font-size: 13px; color: #5E5A52">{{x.canal}}</span></sc-for></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><span style="font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: #6B5210">Para practicar</span><a href="{{b.pixar.url}}" target="_blank" rel="noopener" style="color: #1F3A5F; font-weight: 600">{{b.pixar.t}}</a><span style="font-size: 13px; color: #5E5A52">Khan Academy</span></div>
+<span style="grid-column: 1 / -1; font-size: 12px; line-height: 18px; color: #8A8273">{{b.nota}}</span>
+</section>
+</sc-if>
+
 <sc-if value="{{b.esAcciones}}" hint-placeholder-val="{{false}}">
 <div style="flex: 1 1 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 10px">
 <sc-for list="{{b.items}}" as="a">
@@ -257,6 +279,7 @@ button{font:inherit;cursor:pointer}
 <sc-if value="{{a.principal}}"><button type="button" style="min-height: 44px; background: #1F3A5F; color: #F6F1E6; border: 0; border-radius: 6px; padding: 0 18px; font: inherit; font-weight: 600; cursor: pointer">{{a.t}}</button></sc-if>
 </sc-for>
 <sc-if value="{{b.hayUrl}}"><a href="{{b.url}}" target="_blank" rel="noopener" style="color: #6B5210; font-weight: 600; margin-left: 6px">{{b.urlTexto}}</a></sc-if>
+<sc-if value="{{b.hayNota}}"><span style="flex: 1 1 100%; font-size: 12px; color: #8A8273">{{b.nota}}</span></sc-if>
 </div>
 </sc-if>
 
@@ -303,6 +326,7 @@ button{font:inherit;cursor:pointer}
 </template>
 <script src="../assets/js/dc-mini.js"></script>
 <script src="../assets/js/portada3d.js"></script>
+<script src="../assets/js/vinetas.js"></script>
 <script src="../assets/js/pasos.js"></script>
 <script>
 
