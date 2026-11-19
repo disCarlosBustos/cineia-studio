@@ -86,7 +86,7 @@
     });
   }
 
-  window.CineIAPasos = function (B) {
+  window.CineIAPasos = function (B, medios) {
     var img = function (id, alt, pie) { return { src: B(id), alt: alt, pie: pie }; };
     var VI = window.CineIAVinetas || [];
     var COLOR = { boceto: '#8B6914', nueva: '#9C3B2E', rec: '#1F3A5F' };
@@ -135,7 +135,7 @@
       '03': {
         intro: 'La canción es la columna de la obra: marca el tiempo de cada viñeta. Aquí se escucha, se lee y se contrasta con lo que entiende la IA.',
         bloques: [
-          bl('Avance', { etiqueta: 'El bosque cambia · canción completa', hecho: '0:00', total: '5:35', pct: 0, reproductor: true, nota: 'Reproductor de la grabación aprobada.' }),
+          bl('Audio', { etiqueta: 'El bosque cambia · «Dos golpes cortos, uno largo»', src: (medios && medios.cancion) || '', nota: 'Canción completa, 5:34.8. Letra de Carlos Eduardo Bustos Hernández; música y voz generadas con Suno. La hoja de desglose usa 5:35.0: la diferencia es de dos décimas de segundo.' }),
           bl('Letra', { etiqueta: 'Letra', ancho: '360px', estrofas: [
             { e: 'Verso 1', versos: ['Soy Ámbar, cuido a mis hermanos;', 'Brizna y Nuez van junto a mí.', 'Mamá llegó del sur del río;', 'en este bosque yo nací.'] },
             { e: 'Coro', versos: ['Dos golpes cortos, uno largo,', 'mamá, te voy a encontrar.', 'Hay muchas patas en el bosque', 'que nos ayudan a avanzar.'] },
@@ -592,7 +592,7 @@
           ['Versiones', 'Trailer de 30 s, versión completa 16:9 y vertical 9:16 con recorte al centro de la acción.'],
           ['Metadatos', 'Título, logline, 5:35, español, 16:9, 24 cps, 2026; palabras clave: familia, separación, solidaridad, fábula, animación.'],
           ['Kit de festival', 'Ficha técnica, sinopsis de una línea y de un párrafo, cuatro láminas, nota de dirección y créditos.'],
-          ['Créditos', 'Idea, letra y dirección: Carlos Eduardo Bustos Hernández. Imágenes generadas con GPT y Midjourney bajo su dirección. Desglose, guion técnico y código con asistencia de Claude. Música: por confirmar.'],
+          ['Créditos', 'Idea, letra y dirección: Carlos Eduardo Bustos Hernández. Música y voz generadas con Suno. Imágenes generadas con GPT y Midjourney bajo su dirección. Desglose, guion técnico y código con asistencia de Claude.'],
           ['Nota de uso de IA', 'Esta obra se hizo con asistencia de inteligencia artificial para las imágenes, el desglose y el código, bajo la dirección, revisión y aprobación del autor. Carlos Eduardo Bustos Hernández.'],
           ['Licencia', 'Propuesta: Creative Commons BY-NC-SA 4.0 como Recurso Educativo Abierto (REA). La decide el autor.'],
           ['Accesibilidad', 'Subtítulos del piloto; la audiodescripción se arma con la columna «Qué se ve» de las 72 viñetas.']]) }),

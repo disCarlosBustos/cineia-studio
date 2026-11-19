@@ -232,6 +232,14 @@ button{font:inherit;cursor:pointer}
 </section>
 </sc-if>
 
+<sc-if value="{{b.esAudio}}" hint-placeholder-val="{{false}}">
+<section style="flex: 1 1 {{b.base}}; min-width: 0; box-sizing: border-box; background: #FBF7EC; border: 1px solid #E3D9C2; border-radius: 6px; padding: 16px 20px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-family: Cambria, Caladea, Georgia, serif; font-variant: small-caps; font-size: 18px; color: #6B5210">{{b.etiqueta}}</span>
+<audio controls preload="metadata" src="{{b.src}}" style="width: 100%"></audio>
+<sc-if value="{{b.hayNota}}"><span style="font-size: 13px; line-height: 20px; color: #5E5A52">{{b.nota}}</span></sc-if>
+</section>
+</sc-if>
+
 <sc-if value="{{b.esAvance}}" hint-placeholder-val="{{false}}">
 <section style="flex: 1 1 {{b.base}}; min-width: 0; box-sizing: border-box; background: #FBF7EC; border: 1px solid #E3D9C2; border-radius: 6px; padding: 16px 20px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px">
 <sc-if value="{{b.reproductor}}"><button type="button" aria-label="Reproducir la canción" style="width: 48px; height: 48px; border-radius: 50%; border: 0; background: #1F3A5F; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="18" height="20" viewBox="0 0 22 24" aria-hidden="true"><path d="M5 2 L21 12 L5 22 Z" fill="#F5EFE0"></path></svg></button></sc-if>
@@ -459,7 +467,7 @@ renderVals: function () {
     const pestanas = etiquetas.map(([id, label]) => ({ label, active: id === f, idle: id !== f, ir: () => this.setState({ vista: 'cap', fase: id, paso: '00', r: 0 }) }));
     const fa = fases[f] || fases.pre;
     const lista = fa.pasos, ix = Math.max(0, lista.findIndex((q) => q.n === pa));
-    const datos = ((window.CineIAPasos ? window.CineIAPasos(B) : {})[f] || {})[pa];
+    const datos = ((window.CineIAPasos ? window.CineIAPasos(B, { cancion: '../assets/audio/dos-golpes-cortos-uno-largo.mp3' }) : {})[f] || {})[pa];
     const actual = lista[ix];
     const paso = Object.assign({ n: actual.n, name: actual.name, state: actual.state }, datos || {
       intro: 'Esta sección se arma después. Aquí aparecerá lo que pide este paso, lo que propone la IA y el registro de tus decisiones.',
