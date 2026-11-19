@@ -483,6 +483,9 @@ renderVals: function () {
     };
   }
 };
+function desdeEnlace() { var m = location.hash.match(/^#(pre|pro|post|eva|dis)(?:-(\d\d))?$/); if (!m) return null; return { vista: m[2] ? 'int' : 'cap', fase: m[1], paso: m[2] || '00', r: 0 }; }
+Object.assign(Libro.state, desdeEnlace() || {});
+window.addEventListener('hashchange', function () { var e = desdeEnlace(); if (e) Libro.setState(e); });
 DCMini.mount(document.getElementById('libro'), document.getElementById('plantilla').innerHTML, Libro);
 
 </script>
