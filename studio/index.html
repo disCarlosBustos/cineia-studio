@@ -84,16 +84,16 @@ button{font:inherit;cursor:pointer}
 <aside style="flex: 0 0 216px; background: #55575D; display: flex; flex-direction: column; padding: 14px 0" aria-label="Pasos del capítulo">
 <sc-for list="{{fase.pasos}}" as="p" hint-placeholder-count="9">
 <sc-if value="{{p.active}}" hint-placeholder-val="{{false}}">
-<a href="#" style="height: 64px; box-sizing: border-box; display: flex; align-items: center; gap: 12px; padding: 0 16px; background: #F5EFE0; color: #1F3A5F; text-decoration: none">
+<button type="button" onClick="{{p.ir}}" aria-current="page" style="width: 100%; height: 64px; box-sizing: border-box; display: flex; align-items: center; gap: 12px; padding: 0 16px; background: #F5EFE0; color: #1F3A5F; border: 0; text-align: left; font: inherit; cursor: pointer">
 <span style="font-family: Cambria, Caladea, Georgia, serif; font-size: 18px; min-width: 26px; color: #6B5210">{{p.n}}</span>
 <span style="display: flex; flex-direction: column"><span style="font-weight: 600">{{p.name}}</span><span style="font-size: 12px; color: #5E5A52">{{p.state}}</span></span>
-</a>
+</button>
 </sc-if>
 <sc-if value="{{p.idle}}" hint-placeholder-val="{{true}}">
-<a href="#" style="height: 64px; box-sizing: border-box; display: flex; align-items: center; gap: 12px; padding: 0 16px; color: #F2EEE6; text-decoration: none; border-bottom: 1px solid #64666C">
+<button type="button" onClick="{{p.ir}}" style="width: 100%; height: 64px; box-sizing: border-box; display: flex; align-items: center; gap: 12px; padding: 0 16px; background: transparent; color: #F2EEE6; border: 0; border-bottom: 1px solid #64666C; text-align: left; font: inherit; cursor: pointer">
 <span style="font-family: Cambria, Caladea, Georgia, serif; font-size: 18px; min-width: 26px; color: #E6D3A3">{{p.n}}</span>
 <span style="display: flex; flex-direction: column"><span>{{p.name}}</span><span style="font-size: 12px; color: #DAD5CC">{{p.state}}</span></span>
-</a>
+</button>
 </sc-if>
 </sc-for>
 </aside>
@@ -110,6 +110,7 @@ button{font:inherit;cursor:pointer}
 </sc-for>
 </nav>
 
+<sc-if value="{{enPortada}}" hint-placeholder-val="{{true}}">
 <main style="flex: 1 1 auto; background: #F5EFE0; padding: 26px 48px 30px; display: flex; flex-direction: column; gap: 18px">
 <div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px 18px">
 <h1 style="margin: 0; font-family: Cambria, Caladea, Georgia, serif; font-weight: 400; font-variant: small-caps; font-size: 40px; color: #1F3A5F">{{fase.titulo}}</h1>
@@ -139,6 +140,136 @@ button{font:inherit;cursor:pointer}
 </div>
 </div>
 </main>
+</sc-if>
+<sc-if value="{{enPaso}}" hint-placeholder-val="{{false}}">
+<main style="flex: 1 1 auto; background: #F5EFE0; padding: 26px 48px 30px; display: flex; flex-direction: column; gap: 18px">
+<div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px 16px">
+<span style="font-family: Cambria, Caladea, Georgia, serif; font-size: 40px; color: #8B6914">{{paso.n}}</span>
+<h1 style="margin: 0; font-family: Cambria, Caladea, Georgia, serif; font-weight: 400; font-variant: small-caps; font-size: 40px; color: #1F3A5F">{{paso.name}}</h1>
+<span style="font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: #6B5210; border: 1px solid #C9B27A; border-radius: 999px; padding: 4px 12px">{{paso.state}}</span>
+</div>
+<div style="width: 72px; height: 2px; background: #8B6914"></div>
+<p style="margin: 0; max-width: 760px; font-family: Cambria, Caladea, Georgia, serif; font-style: italic; font-size: 18px; line-height: 27px; color: #3A3732">{{paso.intro}}</p>
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: stretch">
+<sc-for list="{{paso.bloques}}" as="b" hint-placeholder-count="3">
+
+<sc-if value="{{b.esTexto}}" hint-placeholder-val="{{true}}">
+<section style="flex: 1 1 {{b.base}}; min-width: 0; box-sizing: border-box; background: #FBF7EC; border: 1px solid #E3D9C2; border-radius: 6px; padding: 16px 20px; display: flex; flex-direction: column; gap: 8px">
+<span style="font-family: Cambria, Caladea, Georgia, serif; font-variant: small-caps; font-size: 18px; color: #6B5210">{{b.etiqueta}}</span>
+<sc-for list="{{b.parrafos}}" as="t"><p style="margin: 0; line-height: 24px">{{t}}</p></sc-for>
+</section>
+</sc-if>
+
+<sc-if value="{{b.esCampos}}" hint-placeholder-val="{{false}}">
+<section style="flex: 1 1 {{b.base}}; min-width: 0; box-sizing: border-box; background: #FBF7EC; border: 1px solid #E3D9C2; border-radius: 6px; padding: 16px 20px; display: flex; flex-direction: column; gap: 12px">
+<span style="font-family: Cambria, Caladea, Georgia, serif; font-variant: small-caps; font-size: 18px; color: #6B5210">{{b.etiqueta}}</span>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(190px, 100%), 1fr)); gap: 12px 18px">
+<sc-for list="{{b.items}}" as="it"><div style="display: flex; flex-direction: column; gap: 3px; border-left: 2px solid #C9B27A; padding-left: 10px"><span style="font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #1F3A5F">{{it.k}}</span><span style="font-size: 14px; line-height: 21px">{{it.v}}</span></div></sc-for>
+</div>
+</section>
+</sc-if>
+
+<sc-if value="{{b.esOpciones}}" hint-placeholder-val="{{false}}">
+<section style="flex: 1 1 {{b.base}}; min-width: 0; box-sizing: border-box; display: flex; flex-direction: column; gap: 10px">
+<span style="font-family: Cambria, Caladea, Georgia, serif; font-variant: small-caps; font-size: 18px; color: #6B5210">{{b.etiqueta}}</span>
+<sc-if value="{{b.hayNota}}"><span style="font-size: 13px; color: #5E5A52">{{b.nota}}</span></sc-if>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 12px">
+<sc-for list="{{b.items}}" as="o">
+<sc-if value="{{o.elegida}}"><div style="background: #1F3A5F; color: #F6F1E6; border-radius: 6px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px"><span style="font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #E6D3A3">{{o.t}} · elegida</span><span style="font-size: 14px; line-height: 21px">{{o.v}}</span></div></sc-if>
+<sc-if value="{{o.otra}}"><div style="background: #FBF7EC; border: 1px dashed #C9B27A; border-radius: 6px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px"><span style="font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #6B5210">{{o.t}}</span><span style="font-size: 14px; line-height: 21px; color: #3A3732">{{o.v}}</span></div></sc-if>
+</sc-for>
+</div>
+</section>
+</sc-if>
+
+<sc-if value="{{b.esLista}}" hint-placeholder-val="{{false}}">
+<section style="flex: 1 1 {{b.base}}; min-width: 0; box-sizing: border-box; background: #FBF7EC; border: 1px solid #E3D9C2; border-radius: 6px; padding: 16px 20px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-family: Cambria, Caladea, Georgia, serif; font-variant: small-caps; font-size: 18px; color: #6B5210">{{b.etiqueta}}</span>
+<sc-for list="{{b.items}}" as="it"><div style="display: flex; gap: 14px; align-items: baseline; border-top: 1px solid #ECE3CF; padding-top: 8px"><span style="font-family: Cambria, Caladea, Georgia, serif; font-size: 20px; color: #8B6914; min-width: 18px">{{it.n}}</span><span style="flex: 0 0 120px; font-weight: 600; color: #1F3A5F">{{it.t}}</span><span style="flex: 1 1 260px; line-height: 22px">{{it.v}}</span></div></sc-for>
+</section>
+</sc-if>
+
+<sc-if value="{{b.esLetra}}" hint-placeholder-val="{{false}}">
+<section style="flex: 1 1 {{b.base}}; min-width: 0; box-sizing: border-box; background: #FBF7EC; border: 1px solid #E3D9C2; border-radius: 6px; padding: 16px 20px; display: flex; flex-direction: column; gap: 12px">
+<span style="font-family: Cambria, Caladea, Georgia, serif; font-variant: small-caps; font-size: 18px; color: #6B5210">{{b.etiqueta}}</span>
+<sc-for list="{{b.estrofas}}" as="e"><div style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #1F3A5F">{{e.e}}</span><sc-for list="{{e.versos}}" as="v"><span style="font-family: Cambria, Caladea, Georgia, serif; font-size: 16px; line-height: 23px">{{v}}</span></sc-for></div></sc-for>
+<span style="font-size: 13px; color: #5E5A52">Fragmento. La letra completa se abre aquí mismo.</span>
+</section>
+</sc-if>
+
+<sc-if value="{{b.esGaleria}}" hint-placeholder-val="{{false}}">
+<section style="flex: 1 1 {{b.base}}; min-width: 0; box-sizing: border-box; display: flex; flex-direction: column; gap: 10px">
+<span style="font-family: Cambria, Caladea, Georgia, serif; font-variant: small-caps; font-size: 18px; color: #6B5210">{{b.etiqueta}}</span>
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(min(180px, 100%), 1fr)); gap: 12px">
+<sc-for list="{{b.items}}" as="g"><figure style="margin: 0; display: flex; flex-direction: column; gap: 5px"><img src="{{g.src}}" alt="{{g.alt}}" loading="lazy" style="width: 100%; aspect-ratio: 16 / 9; object-fit: cover; display: block; border-radius: 3px; box-shadow: 0 6px 16px rgba(60,45,20,0.16)"><figcaption style="font-size: 12px; line-height: 16px; color: #5E5A52">{{g.pie}}</figcaption></figure></sc-for>
+</div>
+</section>
+</sc-if>
+
+<sc-if value="{{b.esTabla}}" hint-placeholder-val="{{false}}">
+<section style="flex: 1 1 {{b.base}}; min-width: 0; box-sizing: border-box; background: #FBF7EC; border: 1px solid #E3D9C2; border-radius: 6px; padding: 16px 20px; display: flex; flex-direction: column; gap: 10px; overflow-x: auto">
+<span style="font-family: Cambria, Caladea, Georgia, serif; font-variant: small-caps; font-size: 18px; color: #6B5210">{{b.etiqueta}}</span>
+<table style="border-collapse: collapse; font-size: 14px; width: 100%">
+<thead><tr><sc-for list="{{b.cols}}" as="c"><th style="text-align: left; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #1F3A5F; border-bottom: 2px solid #C9B27A; padding: 6px 10px 6px 0; font-weight: 600">{{c}}</th></sc-for></tr></thead>
+<tbody><sc-for list="{{b.filas}}" as="r"><tr><sc-for list="{{r}}" as="c"><td style="border-bottom: 1px solid #ECE3CF; padding: 7px 10px 7px 0; vertical-align: top">{{c}}</td></sc-for></tr></sc-for></tbody>
+</table>
+<sc-if value="{{b.hayNota}}"><span style="font-size: 13px; color: #5E5A52">{{b.nota}}</span></sc-if>
+</section>
+</sc-if>
+
+<sc-if value="{{b.esLinea}}" hint-placeholder-val="{{false}}">
+<section style="flex: 1 1 {{b.base}}; min-width: 0; box-sizing: border-box; background: #FBF7EC; border: 1px solid #E3D9C2; border-radius: 6px; padding: 16px 20px; display: flex; flex-direction: column; gap: 10px">
+<span style="font-family: Cambria, Caladea, Georgia, serif; font-variant: small-caps; font-size: 18px; color: #6B5210">{{b.etiqueta}}</span>
+<div style="display: flex; height: 54px; border-radius: 4px; overflow: hidden">
+<sc-for list="{{b.tramos}}" as="t"><div style="flex: 0 0 {{t.w}}%; background: {{t.c}}; color: #FBF7EC; display: flex; flex-direction: column; justify-content: center; padding: 0 10px; box-sizing: border-box; overflow: hidden; border-right: 2px solid #FBF7EC"><span style="font-size: 13px; font-weight: 600; white-space: nowrap">{{t.t}}</span><span style="font-size: 12px; white-space: nowrap">{{t.s}}</span></div></sc-for>
+</div>
+<div style="display: flex; height: 26px; gap: 2px" aria-hidden="true">
+<sc-for list="{{vinetas}}" as="x"><div style="flex: 1 1 0; background: #E3D9C2; border-radius: 1px"></div></sc-for>
+</div>
+<span style="font-size: 13px; color: #5E5A52">Cada marca es una viñeta; su ancho saldrá de la duración calculada en el desglose.</span>
+</section>
+</sc-if>
+
+<sc-if value="{{b.esAvance}}" hint-placeholder-val="{{false}}">
+<section style="flex: 1 1 {{b.base}}; min-width: 0; box-sizing: border-box; background: #FBF7EC; border: 1px solid #E3D9C2; border-radius: 6px; padding: 16px 20px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px">
+<sc-if value="{{b.reproductor}}"><button type="button" aria-label="Reproducir la canción" style="width: 48px; height: 48px; border-radius: 50%; border: 0; background: #1F3A5F; display: flex; align-items: center; justify-content: center; cursor: pointer"><svg width="18" height="20" viewBox="0 0 22 24" aria-hidden="true"><path d="M5 2 L21 12 L5 22 Z" fill="#F5EFE0"></path></svg></button></sc-if>
+<span style="font-family: Cambria, Caladea, Georgia, serif; font-variant: small-caps; font-size: 18px; color: #6B5210">{{b.etiqueta}}</span>
+<div style="flex: 1 1 240px; height: 8px; background: #E3D9C2; border-radius: 4px; overflow: hidden"><div style="width: {{b.pct}}%; height: 100%; background: #8B6914"></div></div>
+<span style="font-family: Cambria, Caladea, Georgia, serif; font-size: 18px; color: #1F3A5F">{{b.hecho}} / {{b.total}}</span>
+<sc-if value="{{b.hayNota}}"><span style="flex: 1 1 100%; font-size: 13px; color: #5E5A52">{{b.nota}}</span></sc-if>
+</section>
+</sc-if>
+
+<sc-if value="{{b.esCjd}}" hint-placeholder-val="{{false}}">
+<section style="flex: 1 1 {{b.base}}; min-width: 0; box-sizing: border-box; background: #F6F1E6; border: 1px solid #C9B27A; border-left: 4px solid #8B6914; border-radius: 6px; padding: 16px 20px; display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px"><span style="font-family: Cambria, Caladea, Georgia, serif; font-variant: small-caps; font-size: 18px; color: #6B5210">{{b.etiqueta}} · Calidad de Justificación de Decisiones (CJD)</span><span style="font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #1F3A5F">Agencia {{b.agencia}}</span></div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 12px 18px">
+<sc-for list="{{b.items}}" as="it"><div style="display: flex; flex-direction: column; gap: 3px"><span style="font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #1F3A5F">{{it.k}}</span><span style="font-size: 14px; line-height: 21px">{{it.v}}</span></div></sc-for>
+</div>
+</section>
+</sc-if>
+
+<sc-if value="{{b.esAcciones}}" hint-placeholder-val="{{false}}">
+<div style="flex: 1 1 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 10px">
+<sc-for list="{{b.items}}" as="a">
+<sc-if value="{{a.normal}}"><button type="button" style="min-height: 44px; background: transparent; color: #1F3A5F; border: 1px solid #1F3A5F; border-radius: 6px; padding: 0 16px; font: inherit; cursor: pointer">{{a.t}}</button></sc-if>
+<sc-if value="{{a.principal}}"><button type="button" style="min-height: 44px; background: #1F3A5F; color: #F6F1E6; border: 0; border-radius: 6px; padding: 0 18px; font: inherit; font-weight: 600; cursor: pointer">{{a.t}}</button></sc-if>
+</sc-for>
+<sc-if value="{{b.hayUrl}}"><a href="{{b.url}}" target="_blank" rel="noopener" style="color: #6B5210; font-weight: 600; margin-left: 6px">{{b.urlTexto}}</a></sc-if>
+</div>
+</sc-if>
+
+</sc-for>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; border-top: 1px solid #E3D9C2; padding-top: 14px; margin-top: 6px">
+<button type="button" onClick="{{pasoAnterior}}" style="min-height: 44px; background: transparent; color: #3A3732; border: 0; font: inherit; cursor: pointer">← {{paso.antes}}</button>
+<sc-if value="{{paso.hayDespues}}"><button type="button" onClick="{{pasoSiguiente}}" style="min-height: 44px; background: transparent; color: #1F3A5F; border: 0; font: inherit; font-weight: 600; cursor: pointer">{{paso.despues}} →</button></sc-if>
+</div>
+</main>
+</sc-if>
+
 
 <section style="background: #2F4A72; color: #F6F1E6; padding: 26px 48px 28px" aria-label="Para ver y leer en esta etapa">
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); gap: 28px; align-items: start">
@@ -159,7 +290,7 @@ button{font:inherit;cursor:pointer}
 <div style="display: flex; flex-direction: column; gap: 14px; align-items: flex-start">
 <span style="font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: #E6D3A3">Para pasar al siguiente capítulo</span>
 <span style="font-size: 14px; line-height: 22px; color: #D9E2EE">{{fase.prueba}}</span>
-<a href="#" style="min-height: 48px; display: inline-flex; align-items: center; background: #D6B160; color: #17181B; text-decoration: none; border-radius: 6px; padding: 0 22px; font-weight: 600">{{fase.empezar}}</a>
+<button type="button" onClick="{{empezar}}" style="min-height: 48px; display: inline-flex; align-items: center; background: #D6B160; color: #17181B; border: 0; border-radius: 6px; padding: 0 22px; font: inherit; font-weight: 600; cursor: pointer">{{fase.empezar}}</button>
 </div>
 </div>
 </section>
@@ -172,10 +303,11 @@ button{font:inherit;cursor:pointer}
 </template>
 <script src="../assets/js/dc-mini.js"></script>
 <script src="../assets/js/portada3d.js"></script>
+<script src="../assets/js/pasos.js"></script>
 <script>
 
 var Libro = {
-  state: { vista: 'tapa', fase: 'pre', mx: 62, my: 46, r: 120 },
+  state: { vista: 'tapa', fase: 'pre', paso: '00', mx: 62, my: 46, r: 120 },
   aplicar: function () {
     var st = this.state, x = (st.mx - 50) / 50, y = (st.my - 50) / 50, d = document.documentElement.style;
     d.setProperty('--mascara', 'radial-gradient(circle ' + st.r + 'px at ' + st.mx + '% ' + st.my + '%, #000 55%, transparent 100%)');
@@ -186,7 +318,8 @@ var Libro = {
   },
   afterRender: function (root) {
     var st = this.state;
-    this.aplicar(); window.scrollTo(0, 0);
+    var clave = st.vista + st.fase + st.paso;
+    this.aplicar(); if (clave !== this._clave) { window.scrollTo(0, 0); this._clave = clave; }
     Portada3D.sincronizar(root.querySelector('canvas[data-portada3d]'), function () { return { dentro: st.r > 0, mx: st.mx, my: st.my }; });
   },
 renderVals: function () {
@@ -194,7 +327,8 @@ renderVals: function () {
     const f = this.state.fase;
     const IMG = {"2c6be48d0a64372bc4382baa8fb08783": "disco.jpg", "a38101cbf2f4edeec56942551a27db39": "salto.jpg", "2c8b76000caec476e056102a4809ccce": "saltitos.jpg", "64abc958f6c9604e05efd41405376a3c": "cable.jpg", "62c9d1ae33d627d0cc05cfc3dfad6842": "logo.jpg", "f0c2dd45f16ed854dee5d441e8572729": "b060.jpg", "67a590ce696bbb3a956ddc42d36fdc93": "b016.jpg", "b44320f3738f784b419f0f22381785db": "b032.jpg", "b1bea4c0724977c7c35a9017d9474108": "b043.jpg", "e1cbe6b5f6901e3ba99e36a8ee12f021": "b008.jpg", "e1a34bd2e9d700a3deb2cb4d5af55acf": "e1.jpg", "58308ddc4506f781c650717fcd873a21": "e7.jpg", "b60f665afe12eca1ad486e02ff87c87b": "ambar.jpg", "e31e158fb0afe8ec6fefe7cfdfaa0b02": "b019.jpg", "80da97d38536db513948b99f78ade4f4": "b051.jpg", "f7935faa356a9afcafd937f508981752": "b052.jpg", "2734069640d03d4e3dbdafb6584ed560": "b058.jpg", "2bdd0276a84ea7b85418e8352c321332": "b023.jpg", "37b0c87294534e80857b3df11a06b1d2": "e5.jpg", "8cf0a4b9554a08a54b5bfbf6f96fd905": "junco.jpg"};
     const B = (id) => '../assets/img/' + (IMG[id] || id);
-    const mk = (raw) => raw.map((r, i) => ({ n: r[0], name: r[1], state: r[2], active: i === 0, idle: i !== 0 }));
+    const pa = this.state.paso;
+    const mk = (raw) => raw.map((r) => ({ n: r[0], name: r[1], state: r[2], active: r[0] === pa, idle: r[0] !== pa, ir: () => this.setState({ paso: r[0] }) }));
     const g = (id, alt, pie) => ({ src: B(id), alt, pie });
     const fases = {
       pre: {
@@ -298,14 +432,27 @@ renderVals: function () {
         aria: 'Abrir el capítulo V, Distribución', imagen: '../assets/img/portada_v3.webp', mapa: '../assets/img/portada_v3_mapa.webp', anim: 'dis', video: '', capas: [capa('../assets/img/melies_tira.webp', 15.275, 5.657, 29.656, 82.762, 3.625, 0, 1.52, 0.36, 10, 'melies8'), capa('../assets/img/v_oclusor.webp', 5.625, 31.737, 40.625, 44.321, 1, 0, 1.92, 1.17, 1)], alt: 'Georges Méliès grita «¡acción!» al camarógrafo, voltea y presenta con el brazo su Luna con la cápsula en el ojo, mientras sus ayudantes guardan películas de Star Film en cajas rumbo a París, Nueva York, Londres, Barcelona y México, dibujo a lápiz sepia', pie: 'Ejemplo: el ident de CineIAStudio. Aquí irá el de tu casa productora.' }
     };
     const etiquetas = [['pre', 'I · Preproducción'], ['pro', 'II · Producción'], ['post', 'III · Postproducción'], ['eva', 'IV · Evaluación'], ['dis', 'V · Distribución']];
-    const pestanas = etiquetas.map(([id, label]) => ({ label, active: id === f, idle: id !== f, ir: () => this.setState({ vista: 'cap', fase: id, r: 0 }) }));
+    const pestanas = etiquetas.map(([id, label]) => ({ label, active: id === f, idle: id !== f, ir: () => this.setState({ vista: 'cap', fase: id, paso: '00', r: 0 }) }));
+    const fa = fases[f] || fases.pre;
+    const lista = fa.pasos, ix = Math.max(0, lista.findIndex((q) => q.n === pa));
+    const datos = ((window.CineIAPasos ? window.CineIAPasos(B) : {})[f] || {})[pa];
+    const actual = lista[ix];
+    const paso = Object.assign({ n: actual.n, name: actual.name, state: actual.state }, datos || {
+      intro: 'Esta sección se arma después. Aquí aparecerá lo que pide este paso, lo que propone la IA y el registro de tus decisiones.',
+      bloques: [{ esTexto: true, base: '100%', etiqueta: 'En construcción', parrafos: ['Primero cerramos la interfaz de Preproducción; luego seguimos con este capítulo.'] }] });
+    paso.antes = ix > 0 ? lista[ix - 1].n + ' · ' + lista[ix - 1].name : 'Portada del capítulo';
+    paso.hayDespues = ix < lista.length - 1; paso.despues = paso.hayDespues ? lista[ix + 1].n + ' · ' + lista[ix + 1].name : '';
     return {
       esTapa: v === 'tapa', esCapGen: v === 'cap', esInterior: v === 'int',
-      fase: fases[f] || fases.pre, cap: caps[f] || caps.pre, pestanas,
+      fase: fa, cap: caps[f] || caps.pre, pestanas, paso, enPortada: pa === '00', enPaso: pa !== '00',
+      vinetas: Array.from({ length: 72 }, (_, i) => i),
+      empezar: () => this.setState({ paso: lista[1] ? lista[1].n : '00' }),
+      pasoAnterior: () => (ix > 0 ? this.setState({ paso: lista[ix - 1].n }) : this.setState({ vista: 'cap', paso: '00' })),
+      pasoSiguiente: () => this.setState({ paso: lista[Math.min(lista.length - 1, ix + 1)].n }),
       mover: (e) => { const b = e.currentTarget.getBoundingClientRect(); this.state.mx = ((e.clientX - b.left) / b.width) * 100; this.state.my = ((e.clientY - b.top) / b.height) * 100; this.state.r = 190; this.aplicar(); },
       salir: () => { this.state.mx = 62; this.state.my = 46; this.state.r = 0; this.aplicar(); },
-      abrir: () => this.setState({ vista: 'cap', fase: 'pre', r: 0 }),
-      entrar: () => this.setState({ vista: 'int' }),
+      abrir: () => this.setState({ vista: 'cap', fase: 'pre', paso: '00', r: 0 }),
+      entrar: () => this.setState({ vista: 'int', paso: '00' }),
       aTapa: () => this.setState({ vista: 'tapa', r: 120, mx: 62, my: 46 }),
       aCapitulo: () => this.setState({ vista: 'cap' })
     };
