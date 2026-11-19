@@ -166,7 +166,26 @@
     return canvas.__rastreo;
   }
 
+  // Portadas con video (IV): corre una vez, se queda en el último cuadro, se desvanece y vuelve a empezar
+  function videoCiclo(caja) {
+    var v = caja && caja.querySelector('video[data-ciclo]');
+    if (!v || v.__ciclo) return;
+    v.__ciclo = true;
+    v.muted = true;
+    v.setAttribute('muted', '');
+    if (quieto) { v.pause(); return; }
+    v.addEventListener('ended', function () {
+      setTimeout(function () {
+        v.style.opacity = '0';
+        setTimeout(function () { v.currentTime = 0; var r = v.play(); if (r && r.catch) r.catch(function () {}); v.style.opacity = '1'; }, 650);
+      }, 1800);
+    });
+    var r = v.play();
+    if (r && r.catch) r.catch(function () {});
+  }
+
   function sincronizar(canvas, fuente) {
+    videoCiclo(canvas && canvas.parentElement);
     var clave = canvas ? canvas.getAttribute('data-img') + '|' + canvas.getAttribute('data-anim') : '';
     if (actual && actual.canvas === canvas && actual.clave === clave) return;
     parar(!(actual && actual.canvas === canvas));
