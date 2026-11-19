@@ -10,6 +10,7 @@ Autor: Carlos Eduardo Bustos Hernández · Escuela de Diseño del Instituto Naci
 |---|---|
 | `index.html` | Página de presentación: método, los cinco Espacios, la obra de ejemplo, biblioteca y origen. Su botón principal lleva al estudio. |
 | `studio/` | El libro de CineIA Studio: tapa, portadas de los cinco capítulos (Preproducción, Producción, Postproducción, Evaluación, Distribución) y el interior de cada uno. |
+| `studio/piloto01/` | Prueba piloto 01 (19 de noviembre de 2026), congelada: las 25 secciones llenas con «El bosque cambia», con sus subtítulos (`bosque-cambia.srt`) y su lista de edición (`bosque-cambia.edl`). |
 | `assets/img/` | Imágenes: bocetos, láminas de escenario, hojas modelo y capas de las portadas. |
 | `assets/js/dc-mini.js` | Intérprete mínimo de las plantillas del libro. |
 | `assets/js/portada3d.js` | Relieve y animación de las portadas de capítulo. |

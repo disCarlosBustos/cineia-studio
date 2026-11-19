@@ -25,17 +25,17 @@
   };
   var yt = function (q) { return 'https://www.youtube.com/results?search_query=' + encodeURIComponent(q); };
 
-  // Capítulos del libro, numeración del manuscrito v2 (puede cambiar al cerrarse el índice)
+  // Capítulos del libro, índice definitivo aprobado el 19 de noviembre de 2026
   var CAP = {
     6: 'Cap. 6 · Del punctum al scroll', 7: 'Cap. 7 · Observar no es mirar', 10: 'Cap. 10 · Narrar, sentir y justificar',
     11: 'Cap. 11 · De la ilusión de vida al mundo justificable', 12: 'Cap. 12 · Principios de dirección con IA',
     13: 'Cap. 13 · Un sistema de compuertas', 14: 'Cap. 14 · Protocolos para creación audiovisual con IA', 15: 'Cap. 15 · Laboratorio',
     16: 'Cap. 16 · La Base Olvera', 17: 'Cap. 17 · Estética de la imagen generada', 18: 'Cap. 18 · Estética del sonido y del silencio',
     19: 'Cap. 19 · Estética del tiempo y del montaje', 20: 'Cap. 20 · Estética de la imperfección y la huella humana',
-    21: 'Cap. 21 · Pedagogía del Observador Audiovisual', 22: 'Cap. 22 · Implementación profesional',
-    23: 'Cap. 23 · Ética de la dirección audiovisual con IA', 24: 'Cap. 24 · El futuro del Observador Audiovisual', 25: 'Cap. 25 · Manifiesto'
+    21: 'Cap. 21 · Pedagogía del Observador Audiovisual', 22: 'Cap. 22 · Hacia un nuevo potencial: el caso «El bosque cambia»', 23: 'Cap. 23 · Implementación profesional',
+    24: 'Cap. 24 · Ética de la dirección audiovisual con IA', 25: 'Cap. 25 · El futuro del Observador Audiovisual', 26: 'Cap. 26 · Manifiesto'
   };
-  var mod = function (n) { return 'Cap. 21bis · módulo ' + n; };
+  var mod = function (n) { return 'Cap. 22 · «El bosque cambia», módulo ' + n; };
   var V = {
     comp: { t: 'Por qué tus videos todavía no se ven como películas', canal: 'Genery', url: yt('Genery Por qué tus videos todavía no se ven como películas') },
     rostro: { t: '¿Por qué los actores de Hollywood se ven tan diferentes en la vida real?', canal: 'canal por confirmar', url: yt('Por qué los actores de Hollywood se ven tan diferentes en la vida real') },
@@ -68,18 +68,18 @@
     'post-05': [[17], [V.visual], PX('Ciencia del color')],
     'eva-01': [[21], [V.canal], PX('El arte de contar historias', HIST)],
     'eva-02': [[6], [V.finales], PX('El arte de contar historias', HIST)],
-    'eva-03': [[13, 23], [V.canal], PX('El arte de contar historias', HIST)],
-    'dis-01': [[mod(6), mod(7), mod(8), 22], [V.canal], PX('El arte de contar historias', HIST)],
+    'eva-03': [[13, 24], [V.canal], PX('El arte de contar historias', HIST)],
+    'dis-01': [[mod(6), mod(7), mod(8), 23], [V.canal], PX('El arte de contar historias', HIST)],
     'dis-02': [[mod(4)], [V.comp], PX('El arte de contar historias', HIST)],
     'dis-03': [[mod(4)], [V.secuencia], PX('Animación')],
-    'dis-04': [[6, 22], [V.canal], PX('El arte de contar historias', HIST)],
-    'dis-05': [[24, 25, '21bis'], [V.finales], PX('El arte de contar historias', HIST)]
+    'dis-04': [[6, 23], [V.canal], PX('El arte de contar historias', HIST)],
+    'dis-05': [[25, 26, 22], [V.finales], PX('El arte de contar historias', HIST)]
   };
   function lecturas(clave) {
     var d = LEC[clave];
     if (!d) return null;
     return bl('Lecturas', {
-      capitulos: d[0].map(function (c) { return typeof c === 'number' ? CAP[c] : (c === '21bis' ? 'Cap. 21bis · el método completo' : c); }),
+      capitulos: d[0].map(function (c) { return typeof c === 'number' ? CAP[c] : c; }),
       videos: d[1], pixar: d[2],
       nota: 'Del libro El Observador Audiovisual, versión de trabajo. El enlace a cada capítulo se agrega cuando quede cerrado. Los videos se citan con canal y título; el minuto del pasaje se señala al cerrar la sección.'
     });
