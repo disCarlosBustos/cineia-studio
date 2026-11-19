@@ -18,8 +18,8 @@
     post: { banda: 683 / 898, foco: 0.30, fuerza: [0.028, 0.018], g: [0, 0, 1], b: [0, 0, 1, 0], c: [0.5, 0.5] },
     // IV · el fondo con volumen; la película del tren corre aparte, recortada a la pantalla
     eva: { banda: 683 / 898, foco: 0.30, fuerza: [0.028, 0.018], g: [0, 0, 1], b: [0, 0, 1, 0], c: [0.5, 0.5] },
-    // V · Méliès presenta su Luna, que se acerca
-    dis: { banda: 684 / 898, foco: 0.30, fuerza: [0.030, 0.020], g: [0.004, 0.003, 2.4], b: [0.075, 0, 4.4, 1], c: [1215 / 1600, 165 / 898] }
+    // V · Méliès va aparte en su tira (8 poses con tiempo de animación); la Luna se acerca
+    dis: { banda: 683 / 898, foco: 0.30, fuerza: [0.030, 0.020], g: [0, 0, 1], b: [0.075, 0, 4.4, 1], c: [1222 / 1600, 158 / 898] }
   };
 
   var VS = 'attribute vec2 a;varying vec2 v;void main(){v=vec2(a.x*0.5+0.5,0.5-a.y*0.5);gl_Position=vec4(a,0.0,1.0);}';
