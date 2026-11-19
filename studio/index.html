@@ -11,7 +11,7 @@ a{color:#1F3A5F;text-decoration-color:#8B6914}a:hover{color:#142640}
 button{font:inherit;cursor:pointer}
 @keyframes girar{from{transform:perspective(2400px) rotateY(-80deg);opacity:0}to{transform:perspective(2400px) rotateY(0deg);opacity:1}}
 .libro{transition:transform .5s ease}button:hover .libro{transform:rotateY(-4deg) rotateX(0deg) translateY(-6px)!important}
-@keyframes trote{0%,100%{translate:0 0}50%{translate:0 -1.2%}}@keyframes galope{0%,100%{translate:0 0}50%{translate:0 -2%}}.trote{animation:trote .52s ease-in-out infinite}.galope{animation:galope .38s ease-in-out infinite}@keyframes cuadros8{to{background-position-x:114.2857%}}.cuadros8{animation:cuadros8 .56s steps(8) infinite}@media (prefers-reduced-motion: reduce){.trote,.galope,.cuadros8{animation:none}}
+@keyframes trote{0%,100%{translate:0 0}50%{translate:0 -1.2%}}@keyframes galope{0%,100%{translate:0 0}50%{translate:0 -2%}}.trote{animation:trote .52s ease-in-out infinite}.galope{animation:galope .38s ease-in-out infinite}@keyframes cuadros8{to{background-position-x:114.2857%}}.cuadros8{animation:cuadros8 .56s steps(8) infinite}@keyframes cuadros14{to{background-position-x:107.6923%}}.cuadros14{animation:cuadros14 4.2s steps(14) infinite}@media (prefers-reduced-motion: reduce){.trote,.galope,.cuadros8,.cuadros14{animation:none}}
 .pagina{animation:girar 0.9s cubic-bezier(.2,.7,.2,1) both;transform-origin:left center}
 @media (prefers-reduced-motion: reduce){.pagina{animation:none}}
 </style>
@@ -59,7 +59,7 @@ button{font:inherit;cursor:pointer}
 <button type="button" onClick="{{entrar}}" onMouseMove="{{mover}}" onMouseLeave="{{salir}}" aria-label="{{cap.aria}}" style="position: relative; display: block; width: min(100%, 1240px); aspect-ratio: 1600 / 898; padding: 0; border: 0; background: #F3EDE0; overflow: hidden; cursor: pointer; box-shadow: 0 34px 80px rgba(0,0,0,0.6)">
 <img src="{{cap.imagen}}" alt="{{cap.alt}}" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block">
 <canvas data-portada3d data-img="{{cap.imagen}}" data-mapa="{{cap.mapa}}" data-anim="{{cap.anim}}" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: 0; transition: opacity 0.4s ease"></canvas>
-<sc-for list="{{cap.capas}}" as="c" hint-placeholder-count="0"><div class="cuadros8" aria-hidden="true" style="position: absolute; left: {{c.x}}%; top: {{c.y}}%; width: {{c.w}}%; height: {{c.h}}%; background-image: url('{{c.src}}'); background-size: 800% 100%; background-repeat: no-repeat; pointer-events: none; animation-duration: {{c.dur}}s; animation-delay: {{c.delay}}s; transform: translate(calc(var(--p3x, 0) * {{c.px}}%), calc(var(--p3y, 0) * {{c.py}}%))"></div></sc-for>
+<div aria-hidden="true" style="position: absolute; inset: 0; transform: scale(1.035); transform-origin: 50% 38.1%; pointer-events: none"><sc-for list="{{cap.capas}}" as="c" hint-placeholder-count="0"><div class="{{c.clase}}" style="position: absolute; left: {{c.x}}%; top: {{c.y}}%; width: {{c.w}}%; height: {{c.h}}%; background-image: url('{{c.src}}'); background-size: {{c.bs}}% 100%; background-repeat: no-repeat; animation-duration: {{c.dur}}s; animation-delay: {{c.delay}}s; transform: translate(calc(var(--p3x, 0) * {{c.px}}%), calc(var(--p3y, 0) * {{c.py}}%))"></div></sc-for></div>
 </button>
 </div>
 </div>
@@ -275,7 +275,7 @@ renderVals: function () {
       }
     };
     const COR = '../assets/img/corredor_tira.webp', JAB = '../assets/img/jabali_tira.webp', GAL = '../assets/img/galope_tira.webp';
-    const capa = (src, x, y, w, h, dur, fase, px, py) => ({ src, x, y, w, h, dur, delay: -(fase / 8) * dur, px, py });
+    const capa = (src, x, y, w, h, dur, fase, px, py, n = 8) => ({ src, x, y, w, h, dur, delay: -(fase / n) * dur, px, py, clase: 'cuadros' + n, bs: n * 100 });
     const caps = {
       pre: { contador: 'CAPÍTULO I DE V', romano: 'I', titulo: 'Preproducción', verbo: 'IMAGINAR',
         frase: 'En las ánforas panatenaicas, hace unos 2 500 años, los pintores griegos pusieron corredores en fila, cada uno en otro momento del paso, como cuadros de una misma carrera. Preproducir es imaginar el movimiento antes de que exista.',
@@ -291,7 +291,7 @@ renderVals: function () {
         aria: 'Abrir el capítulo III, Postproducción', imagen: '../assets/img/portada_iii2.webp', mapa: '../assets/img/portada_iii2_mapa.webp', anim: 'post', capas: [], alt: 'Gaston Paulin toca el piano mientras Émile Reynaud mueve su Teatro Óptico y Pierrot y Colombina bailan en la pantalla del Museo Grévin, dibujo a lápiz sepia', pie: 'El remanso de noche. Lámina de escenario de «El bosque cambia».' },
       eva: { contador: 'CAPÍTULO IV DE V', romano: 'IV', titulo: 'Evaluación', verbo: 'MIRAR', fondo: '../assets/img/b032.jpg',
         frase: 'En diciembre de 1895, en el sótano del Grand Café de París, los hermanos Lumière proyectaron por primera vez ante un público que pagó su entrada. El cine empezó a existir cuando alguien lo miró.',
-        aria: 'Abrir el capítulo IV, Evaluación', imagen: '../assets/img/portada_iv.webp', mapa: '../assets/img/portada_iv_mapa.webp', anim: 'eva', capas: [], alt: 'El público de la primera función de cine se sobresalta ante una locomotora proyectada en la pantalla, dibujo a lápiz sepia', pie: 'Quien mira y quien cruza. Boceto de «El bosque cambia».' },
+        aria: 'Abrir el capítulo IV, Evaluación', imagen: '../assets/img/portada_ivb.webp', mapa: '../assets/img/portada_ivb_mapa.webp', anim: 'eva', capas: [capa('../assets/img/tren_pantalla_tira.webp', 59.3125, 0.2227, 39.375, 51.893, 4.2, 0, -1.46, -0.71, 14)], alt: 'El público de la primera función de cine se sobresalta ante una locomotora proyectada en la pantalla, dibujo a lápiz sepia', pie: 'Quien mira y quien cruza. Boceto de «El bosque cambia».' },
       dis: { contador: 'CAPÍTULO V DE V', romano: 'V', titulo: 'Distribución', verbo: 'EXHIBIR', fondo: '../assets/img/e7.jpg',
         frase: 'Georges Méliès fundó su propia casa productora, Star Film, y ponía su estrella en las películas para que nadie se las adueñara. La última portada de este libro es tuya: tu casa productora firma la obra y la entrega a quien la estaba esperando.',
         aria: 'Abrir el capítulo V, Distribución', imagen: '../assets/img/portada_v2.webp', mapa: '../assets/img/portada_v2_mapa.webp', anim: 'dis', capas: [], alt: 'Georges Méliès presenta la Luna con la cápsula en el ojo mientras sus ayudantes guardan películas de Star Film en cajas rumbo a París, Nueva York, Londres, Barcelona y México, dibujo a lápiz sepia', pie: 'Ejemplo: el ident de CineIAStudio. Aquí irá el de tu casa productora.' }

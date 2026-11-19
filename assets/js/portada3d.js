@@ -16,8 +16,8 @@
     pro: { banda: 685 / 898, foco: 0.30, fuerza: [0.030, 0.020], g: [0, 0, 1], b: [0, 0, 1, 0], c: [0.5, 0.5] },
     // III · Pierrot y Colombina bailan en la pantalla, Paulin sigue la música
     post: { banda: 682 / 898, foco: 0.30, fuerza: [0.028, 0.018], g: [0.009, 0.006, 1.25], b: [0.002, 0.004, 0.68, 0], c: [0.5, 0.5] },
-    // IV · el sombrero flota y el tren avanza hacia el público
-    eva: { banda: 683 / 898, foco: 0.30, fuerza: [0.028, 0.018], g: [0.005, 0.013, 1.7], b: [0.07, 0, 3.6, 1], c: [1330 / 1600, 395 / 898] },
+    // IV · el fondo con volumen; la película del tren corre aparte, recortada a la pantalla
+    eva: { banda: 683 / 898, foco: 0.30, fuerza: [0.028, 0.018], g: [0, 0, 1], b: [0, 0, 1, 0], c: [0.5, 0.5] },
     // V · Méliès presenta su Luna, que se acerca
     dis: { banda: 684 / 898, foco: 0.30, fuerza: [0.030, 0.020], g: [0.004, 0.003, 2.4], b: [0.075, 0, 4.4, 1], c: [1215 / 1600, 165 / 898] }
   };
